@@ -12,20 +12,23 @@
     session_start();
     $username=$_SESSION["username"];
     //$story_id=$_SESSION["story_id"];
-    $story_id=$_POST['story_id'];
+    if(!isset($_SESSION["story_id"])){
+        $_SESSION["story_id"]=$_POST['story_id'];
+    }
+    $story_id= $_SESSION["story_id"];
     ?>
     
-    <form action="comment.php" method="POST">
+    <form action="addcomment.php" method="POST">
         <input type="text" name="comment_text" id="new_comment_input">
         <input type="hidden" name="commented_user" value="<?php echo $username;?>">
-        <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>" >
+        <input type="hidden" name="token2" value="<?php echo $_SESSION['token'];?>" >
         <input type="hidden" value="<?php echo $story_id;?>" name="story_id">
         <input type="submit" value="Comment" name="comment_button">
     </form>
 
     <?php
         require 'database.php';
-        if(!hash_equals($_SESSION['token'], $_POST['token'])){
+        if(isset($_POST['token'])&&!hash_equals($_SESSION['token'], $_POST['token'])){
             die("Request forgery detected");
         }
         $query_story=$mysqli->prepare("select story, username, link from posts where story_id='$story_id'");
@@ -62,31 +65,6 @@
         echo "</ul>\n";
 
         $query_comments->close();
-
-        //insert comment
-        if(isset($_POST['comment_button'])){
-            if(!hash_equals($_SESSION['token'], $_POST['token'])){
-                die("Request forgery detected");
-            }
-            require 'database.php';
-            $username = (String)$_SESSION["username"];
-            $comment = (String)$_POST['comment_text'];
-            $story_id = $_POST["story_id"];
-            echo $story_id;
-
-            $stmt = $mysqli->prepare("insert into comments (username, comment, story_id) values (?, ?, ?) ");
-            if(!$stmt){
-                printf("Query Prep Failed: %s\n", $mysqli->error);
-                exit;
-            }
-            
-            $stmt->bind_param('ssi', $username, $comment, $story_id);
-            
-            echo htmlspecialchars($story_id);
-            $stmt->execute();
-
-            $stmt->close();
-        }
     ?>
 
     <!--comment success-->
