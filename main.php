@@ -112,13 +112,15 @@
         <input type="hidden" value="<?php echo $username;?>" name="each_post_user"/>
         <input type="hidden" value="<?php echo $story;?>" name="each_post_story"/>
         <input type="hidden" value="<?php echo $link;?>" name="each_post_link"/>
+        <input type="hidden" value="<?php echo $story_id;?>" name="story_id"/>
+        <!--<input type="hidden" value="story_id"-->
         <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
         </form>
         <?php
         //display delete button only to the user who posted the story
         if(isset($_SESSION["username"])){
             if($_SESSION["username"]==$username){
-                $_SESSION["story_id"]=$story_id;
+                //$_SESSION["story_id"]=$story_id;
                 ?>
                 <form action ="delete_story.php" method="POST" class="buttons">
                 <input type="submit" value="Delete" name="delete">
