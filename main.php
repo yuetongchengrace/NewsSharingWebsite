@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="main.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Press+Start+2P&family=Quantico:ital@1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Files</title>
 </head>
@@ -23,18 +23,19 @@
                     echo "Visitor";
                 }
             ?>
-            <button class="button" type="submit">Logout</button>
+            <input type="submit" value="Logout"/>
         </form> 
     </div>
     <!--New Post-->
     <div>
         <form action="main.php" method="POST" id="new_post">
             <div class="post">
-            <textarea name="new_story_input" id="new_story_input"></textarea>
-            <input type="hidden" name="new_story_user" value="<?php echo $_SESSION["username"];?>">
+                <div>Add new post:</div>
+                <textarea name="new_story_input" id="new_story_input"></textarea>
+                <input type="hidden" name="new_story_user" value="<?php echo $_SESSION["username"];?>"/>
                 <div class="post" id="post_button"><input type="submit" value="Post" name="post_button"></div>
-                </div>
-                <div id="new_link">
+                <div id="new_link">Add link:
+                <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
                 <input type="text" name="new_link_input" id="new_link_input">
                 <!--Add new post to database-->
                 <?php
@@ -65,6 +66,8 @@
                         $stmt->execute();
 
                         $stmt->close();
+                        
+                        header("Location: main.php");
 
                     }
                 }
@@ -92,22 +95,42 @@
 
     echo '<div id="stories">';
     while($stmt->fetch()){
-        echo '<div class="story"><span class="post_id">';
-        echo htmlspecialchars($story_id);
-        echo '</span><span class="post_username">';
+        //display each story
+        echo '<div class="story">';
+        echo '<span class="post_username">';
         echo htmlspecialchars($username);
-        echo '</span><span class="post_story">';
+        echo ':</span><span class="post_story">';
         echo htmlspecialchars($story);
         echo '</span><span class="post_link">';
         echo '<a href="'.htmlspecialchars($link).'">Link</a>';
         echo '</span>';
+        
         ?>
-        <form action ="comment.php" method="POST" >
+        <!--Display comment button-->
+        <form action ="comment.php" method="POST" class="buttons">
         <input type="submit" value="Comment" name="comment">
         <input type="hidden" value="<?php echo $username;?>" name="each_post_user"/>
         <input type="hidden" value="<?php echo $story;?>" name="each_post_story"/>
         <input type="hidden" value="<?php echo $link;?>" name="each_post_link"/>
+        <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
         </form>
+        <?php
+        //display delete button only to the user who posted the story
+        if(isset($_SESSION["username"])){
+            if($_SESSION["username"]==$username){
+                $_SESSION["story_id"]=$story_id;
+                ?>
+                <form action ="delete_story.php" method="POST" class="buttons">
+                <input type="submit" value="Delete" name="delete">
+                <input type="hidden" value="<?php echo $story_id;?>" name="story_to_delete">
+                </form>
+                <?php
+                
+            }
+        }
+        
+        ?>
+
         </div>
         <?php
     }   

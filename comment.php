@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="main.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comments</title>
 </head>
@@ -25,7 +27,7 @@
         if(!hash_equals($_SESSION['token'], $_POST['token'])){
             die("Request forgery detected");
         }
-        $query_story=$mysqli->prepare("select story from posts where story_id='$story_id'");
+        $query_story=$mysqli->prepare("select story, username, link from posts where story_id='$story_id'");
         $query_comments=$mysqli->prepare("select comment, username from comments where story_id='$story_id'");
         if(!$query_story || !$query_comments){
             printf("Query Prep Failed: %s\n", $mysqli->error);
@@ -33,10 +35,16 @@
         }
         //query for story
         $query_story->execute();
-        $result= $query_story->get_result();
+        $result = $query_story->get_result();
         $row = $result->fetch_assoc();
         $story = $row['story'];
+        $uploader = $row['username'];
+        $story_link = $row['link'];
         echo htmlentities($story);
+        echo "\t" ;
+        echo htmlentities($uploader);
+        echo "\t" ;
+        echo htmlentities($story_link);
         echo "<ul>\n";
         $query_story->close();
 
