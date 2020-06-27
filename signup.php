@@ -6,7 +6,7 @@
     <title>Sign up</title>
 </head>
 <body>
-    <form action="login.php" method="POST" >
+    <form action="signup.php" method="POST" >
         <span class="big">Username:</span><br>
         <input type="text" name="username" id="username"/> <br><br>
         <span class="big">Password:</span><br>
@@ -18,8 +18,8 @@
 
 
     <?php
-        require 'database.php';
         if(isset($_POST['submit'])&&$_POST['username']!=null&&$_POST['password']!=null){
+            require 'database.php';
             if($_POST['password']!=$_POST['confirm_password']){
                 echo "Password Does Not Match";
             }

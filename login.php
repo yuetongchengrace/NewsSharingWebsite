@@ -30,7 +30,7 @@
             $result= $stmt->get_result();
             $row = $result->fetch_assoc();
             $hashed_password = $row['password'];
-    
+
             if(password_verify($input_password, $hashed_password)){
                 session_start();
                 $_SESSION["username"]=$username;
