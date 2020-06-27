@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Files</title>
 </head>
-<body>
+<body> 
     <?php
     session_start();
     require 'database.php';
@@ -21,18 +21,23 @@
 
     $stmt->bind_result($username, $story, $link);
 
-    echo "<ul>\n";
+    
     while($stmt->fetch()){
-        printf("\t<li>%s %s %s</li>\n",
-            htmlspecialchars($username),
-            htmlspecialchars($story),
-            '<a href="'.htmlspecialchars($link).'">Link</a>'
-        );
+        echo '<div><span>';
+        echo htmlspecialchars($username);
+        echo '</span><span>';
+        echo htmlspecialchars($story);
+        echo '</span><span>';
+        echo '<a href="'.htmlspecialchars($link).'">Link</a>';
+        echo '</span></div>';
     }
-    echo "</ul>\n";
-
     $stmt->close();
     ?>
 
+    <div>
+        <form>
+
+        </form>
+    </div>
 </body>
 </html>
