@@ -20,7 +20,7 @@ input[type="submit"]{
 .logout{
     position:absolute;
     right:5%;
-    top:2%;
+    top:1%;
     
 }
 #new_post{
@@ -59,7 +59,12 @@ input[type="submit"]{
 }
 .post_link{
     margin-left:1%;
+}
+.post_time{
+    margin-left:1%;
+    color:grey;
     margin-right:5%;
+    font-size:14px;
 }
 #new_story_input{
     font-size:20px;
@@ -164,4 +169,25 @@ a:link{
 
 a:hover{
     color:#fffea6;
+}
+
+.sort{
+    display:inline-block;
+    margin-top:0px;
+}
+
+#sort_new{
+    position:relative;
+    
+    
+}
+
+#sort_edited{
+    position:relative;
+    
+}
+
+#undo_sort{
+    position:relative;
+    
 }

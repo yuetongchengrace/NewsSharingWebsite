@@ -26,6 +26,29 @@
             <input type="submit" value="Logout"/>
         </form> 
     </div>
+    <!--Sort by most recent added post button-->
+    <div class="sort" id="sort_new">
+        <form method="POST" class="sort_buttons" action="main.php">
+            <input type="submit" value="sort by newest post" name="sort_new_button"/>
+        </form> 
+    </div>
+    <!--Sort by most recent edited button-->
+    <div class="sort" id="sort_edited">
+        <form method="POST" class="sort_buttons" action="main.php">
+            <input type="submit" value="sort by last edit" name="sort_edited_button"/>
+        </form> 
+    </div>
+    <div id="undo_sort">
+        <?php
+            if(isset($_POST["sort_edited_button"])||isset($_POST["sort_new_button"])){
+                ?>
+                <form method="POST" class="sort_buttons" action="main.php">
+                <input type="submit" value="undo sort" name="undo_sort_button"/>
+                </form> 
+                <?php
+            }
+        ?>
+    </div>
     <!--New Post-->
     <div>
         <form action="main.php" method="POST" id="new_post">
@@ -77,13 +100,19 @@
             
         </form>
     </div>
-
-    
-
     <!--Display all stories from database-->
     <?php
     require 'database.php';
-    $stmt = $mysqli->prepare("select story_id,username, story, link from posts");
+    if(isset($_POST["sort_new_button"])){
+        $stmt = $mysqli->prepare("select story_id,username, story, link,added_time from posts order by added_time DESC");
+    }
+    else if(isset($_POST["sort_edited_button"])){
+        $stmt = $mysqli->prepare("select story_id,username, story, link,edited_time from posts order by edited_time DESC");
+    }
+    else{
+        $stmt = $mysqli->prepare("select story_id,username, story, link, added_time from posts");
+    }
+    
     if(!$stmt){
         printf("Query Prep Failed: %s\n", $mysqli->error);
         exit;
@@ -91,7 +120,7 @@
 
     $stmt->execute();
 
-    $stmt->bind_result($story_id, $username, $story, $link);
+    $stmt->bind_result($story_id, $username, $story, $link, $time);
 
     echo '<div id="stories">';
     while($stmt->fetch()){
@@ -103,6 +132,8 @@
         echo htmlspecialchars((String)$story); 
         echo '</span><span class="post_link">';
         echo '<a href="'.htmlspecialchars($link).'">Link</a>';
+        echo '</span><span class="post_time">';
+        echo htmlspecialchars($time);
         echo '</span>';
         
         ?>
