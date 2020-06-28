@@ -18,12 +18,14 @@
                 echo "User: ";
                 if(isset($_SESSION["username"])!=null){
                     echo htmlentities($_SESSION["username"]);
+                    echo '<input type="submit" value="Logout"/>';
                 }
                 else{
                     echo "Visitor";
+                    echo '<input type="submit" value="Login as user"/>';
                 }
             ?>
-            <input type="submit" value="Logout"/>
+            
         </form> 
     </div>
     <!--Sort by most recent added post button-->
@@ -38,6 +40,7 @@
             <input type="submit" value="sort by last edit" name="sort_edited_button"/>
         </form> 
     </div>
+    <!--undo sort button-->
     <div id="undo_sort">
         <?php
             if(isset($_POST["sort_edited_button"])||isset($_POST["sort_new_button"])){
@@ -103,14 +106,34 @@
     <!--Display all stories from database-->
     <?php
     require 'database.php';
+    $limit=5;
+
     if(isset($_POST["sort_new_button"])){
-        $stmt = $mysqli->prepare("select story_id,username, story, link,added_time from posts order by added_time DESC");
+        if(isset($_POST["show_all_button"])){
+            echo "Your clicked sort new and show all";
+            $stmt = $mysqli->prepare("select story_id,username, story, link, added_time from posts order by added_time DESC");
+        
+        }else{
+            $stmt = $mysqli->prepare("select story_id,username, story, link,added_time from posts order by added_time DESC LIMIT $limit;");
+        }
+
     }
     else if(isset($_POST["sort_edited_button"])){
-        $stmt = $mysqli->prepare("select story_id,username, story, link,edited_time from posts order by edited_time DESC");
+        if(isset($_POST["show_all_button"])){
+            $stmt = $mysqli->prepare("select story_id,username, story, link, added_time from posts order by edited_time DESC");
+            
+        }
+        else{
+        $stmt = $mysqli->prepare("select story_id,username, story, link,edited_time from posts order by edited_time DESC LIMIT $limit");
+        }
     }
     else{
-        $stmt = $mysqli->prepare("select story_id,username, story, link, added_time from posts");
+        if(isset($_POST["show_all_button"])){
+            $stmt = $mysqli->prepare("select story_id,username, story, link, added_time from posts");
+        }
+        else{
+        $stmt = $mysqli->prepare("select story_id,username, story, link, added_time from posts LIMIT $limit");
+        }
     }
     
     if(!$stmt){
@@ -173,6 +196,14 @@
         <?php
     }   
     $stmt->close();
+    ?>
+    <div id="show_all">
+        <form action="main.php" method="POST">
+        <input type="submit" value="show all stories" name="show_all_button"></button>
+        </form>
+        
+    </div>
+    <?php
     echo '</div>';
     ?>
 </body>

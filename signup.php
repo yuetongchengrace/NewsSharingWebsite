@@ -21,30 +21,35 @@
     <div id="sign_up_link"><a href="login.php">Click to login</a></div>
 
     <?php
-        if(isset($_POST['submit'])&&$_POST['username']!=null&&$_POST['password']!=null){
-            require 'database.php';
-            //check if password confirmation is successful
-            if($_POST['password']!=$_POST['confirm_password']){
-                echo "Password Does Not Match";
+        if(isset($_POST['submit'])){
+            if($_POST['username']!=null&&$_POST['password']!=null){
+                require 'database.php';
+                //check if password confirmation is successful
+                if($_POST['password']!=$_POST['confirm_password']){
+                    echo "Password Does Not Match";
+                }
+                else{
+                    $username = (String)$_POST['username'];
+
+                    //salt and hash password
+                    $hashed_password = password_hash((String)$_POST['password'], PASSWORD_DEFAULT);
+
+                    //add user to table users
+                    $stmt = $mysqli->prepare("insert into users (username, password) values (?, ?)");
+                    if(!$stmt){
+                        printf("Query Prep Failed: %s\n", $mysqli->error);
+                        exit;
+                    }
+
+                    $stmt->bind_param('ss', $username, $hashed_password);
+                    
+                    $stmt->execute();
+
+                    $stmt->close();
+                }
             }
             else{
-                $username = (String)$_POST['username'];
-
-                //salt and hash password
-                $hashed_password = password_hash((String)$_POST['password'], PASSWORD_DEFAULT);
-
-                //add user to table users
-                $stmt = $mysqli->prepare("insert into users (username, password) values (?, ?)");
-                if(!$stmt){
-                    printf("Query Prep Failed: %s\n", $mysqli->error);
-                    exit;
-                }
-
-                $stmt->bind_param('ss', $username, $hashed_password);
-                
-                $stmt->execute();
-
-                $stmt->close();
+                echo "you need to enter username and password to sign up";
             }
         }
     ?>

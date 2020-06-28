@@ -61,9 +61,9 @@
     ?>
 
 <!--text field to edit the comment-->
-    <form action="edit_comment.php" method="POST">
+    <form action="edit_comment.php" method="POST" id="edit_comment_form">
         <input type="hidden" value="<?php echo $comment_id;?>" name="comment_to_edit">
-        <input type="text" value="<?php echo $comment;?>" name="edited_comment">
+        <textarea name="edited_comment" id="edited_comment"><?php echo $comment; ?></textarea>
         <input type="submit" value="Edit" name="edit">
         <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
     </form>

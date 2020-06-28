@@ -61,9 +61,9 @@
     ?>
 
 
-    <form action="edit_story.php" method="POST">
+    <form action="edit_story.php" method="POST" id="edit_story_form">
         <input type="hidden" value="<?php echo $story_id;?>" name="story_to_edit">
-        <input type="text" value="<?php echo $story;?>" name="edited_story">
+        <textarea name="edited_story" id="edited_story"><?php echo $story; ?></textarea>
         <input type="submit" value="Edit" name="edit">
         <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
     </form>

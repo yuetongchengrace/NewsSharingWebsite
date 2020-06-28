@@ -17,6 +17,40 @@ input[type="submit"]{
     color:#f2e6e6;
 }
 
+a:link{
+    
+    text-decoration: none;
+}
+
+a:hover{
+    color:#fffea6;
+}
+
+/*main.php*/
+.sort{
+    display:inline-block;
+    margin-top:0px;
+}
+
+#sort_new{
+    position:relative;
+    
+    
+}
+
+#sort_edited{
+    position:relative;
+    
+}
+
+#undo_sort{
+    position:relative;
+    
+}
+
+#show_all{
+    margin-top:50px;
+}
 .logout{
     position:absolute;
     right:5%;
@@ -93,7 +127,7 @@ textarea{
 .buttons{
     display:inline-block;
 }
-
+/*Login.php*/
 #log_in_form{
     margin-top:350px;
 }
@@ -111,6 +145,7 @@ textarea{
     height:30px;
 }
 
+/*signup.php*/
 #sign_up_link{
     margin-top:100px;
 }
@@ -123,6 +158,7 @@ textarea{
     height:30px;
 }
 
+/*comment.php*/
 #add_comment_form{
     margin-top:30px;
     width:600px;
@@ -162,32 +198,28 @@ textarea{
     margin-bottom:50px;
 }
 
-a:link{
-    
-    text-decoration: none;
+/*edit_story.php*/
+#edit_story_form{
+    margin-top:350px;
+}
+#edited_story{
+    font-size:20px;
+    width:30%;
+    height:150px;
 }
 
-a:hover{
-    color:#fffea6;
+/*edit_comment.php*/
+#edit_comment_form{
+    margin-top:350px;
 }
 
-.sort{
-    display:inline-block;
-    margin-top:0px;
+#edited_comment{
+    font-size:20px;
+    width:30%;
+    height:100px;
 }
 
-#sort_new{
-    position:relative;
-    
-    
-}
-
-#sort_edited{
-    position:relative;
-    
-}
-
-#undo_sort{
-    position:relative;
-    
+/*edit_comment_success.php & edit_success.php*/
+.edit{
+    margin-top:350px;
 }
