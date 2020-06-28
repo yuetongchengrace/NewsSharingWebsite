@@ -126,6 +126,10 @@
                 <input type="submit" value="Delete" name="delete">
                 <input type="hidden" value="<?php echo $story_id;?>" name="story_to_delete">
                 </form>
+                <form action ="edit_story.php" method="POST" class="buttons">
+                <input type="submit" value="Edit" name="edit">
+                <input type="hidden" value="<?php echo $story_id;?>" name="story_to_edit">
+                </form>
                 <?php
                 
             }
