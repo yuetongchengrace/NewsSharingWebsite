@@ -83,6 +83,12 @@
                     <input type="submit" value="Delete" name="delete">
                     <input type="hidden" value="<?php echo $comment_id;?>" name="comment_to_delete">
                     </form>
+
+                    <form action ="edit_comment.php" method="POST" class="buttons">
+                    <input type="submit" value="Edit" name="edit">
+                    <input type="hidden" value="<?php echo $comment_id;?>" name="comment_to_edit">
+                    </form>
+
                     <?php
                     
                 }
