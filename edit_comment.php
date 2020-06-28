@@ -33,7 +33,7 @@
                 $stmt->close();
                 
             }
-            header("location: edit_success.php");
+            header("location: edit_comment_success.php");
             exit;
         }
 
