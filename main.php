@@ -49,7 +49,7 @@
                         echo "Please enter something for your story";
                     }
                     else{
-                        $current_user=(String)$_SESSION["username"];
+                        $current_user=(String)$_SESSION["username"];  
                         echo "nice you are logged in!";
                         require 'database.php';
                         $new_user=(String)$_POST['new_story_user'];
@@ -98,9 +98,9 @@
         //display each story
         echo '<div class="story">';
         echo '<span class="post_username">';
-        echo htmlspecialchars($username);
+        echo htmlspecialchars((String)$username);
         echo ':</span><span class="post_story">';
-        echo htmlspecialchars($story);
+        echo htmlspecialchars((String)$story); 
         echo '</span><span class="post_link">';
         echo '<a href="'.htmlspecialchars($link).'">Link</a>';
         echo '</span>';

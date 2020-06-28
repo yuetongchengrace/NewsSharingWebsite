@@ -111,7 +111,7 @@
     <?php
     //add new comment
     if(isset($_SESSION["username"])!=null){
-        $username=$_SESSION["username"];
+        $username=(String)$_SESSION["username"];
         ?>
         <form action="addcomment.php" method="POST" id="add_comment_form">
             <div>Add new comment:</div>
