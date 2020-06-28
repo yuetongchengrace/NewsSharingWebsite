@@ -10,28 +10,27 @@
 <body>
     <?php
     session_start();
-    
-    //$story_id=$_SESSION["story_id"];
     if(isset($_POST['each_story_id'])){
-    $_SESSION["story_id"]=$_POST['each_story_id'];
-    }
-    $story_id= $_SESSION["story_id"];
-    if(isset($_SESSION["username"])!=null){
-        $username=$_SESSION["username"];
-        ?>
-        <form action="addcomment.php" method="POST">
-        <input type="text" name="comment_text" id="new_comment_input">
-        <input type="hidden" name="commented_user" value="<?php echo $username;?>">
-        <input type="hidden" name="token2" value="<?php echo $_SESSION['token'];?>" >
-        <input type="hidden" value="<?php echo $story_id;?>" name="story_id">
-        <input type="submit" value="Comment" name="comment_button">
-        </form>
-        <?php
-    }
-   
+        $_SESSION["story_id"]=$_POST['each_story_id'];
+        }
+        $story_id= $_SESSION["story_id"];
     ?>
-    
-    
+    <!--Logout button-->
+    <div>
+        <form method="POST" action="logout.php" class="logout">
+            <?php
+                echo "User: ";
+                if(isset($_SESSION["username"])!=null){
+                    echo htmlentities($_SESSION["username"]);
+                }
+                else{
+                    echo "Visitor";
+                }
+            ?>
+            <input type="submit" value="Logout"/>
+        </form> 
+    </div>
+
     <?php
         require 'database.php';
         if(isset($_POST['token'])&&isset($_SESSION['token'])){
@@ -40,7 +39,7 @@
             }
         }
         $query_story=$mysqli->prepare("select story, username, link from posts where story_id='$story_id'");
-        $query_comments=$mysqli->prepare("select comment, username from comments where story_id='$story_id'");
+        $query_comments=$mysqli->prepare("select comment, username,comment_id from comments where story_id='$story_id'");
         if(!$query_story || !$query_comments){
             printf("Query Prep Failed: %s\n", $mysqli->error);
             exit;
@@ -52,29 +51,72 @@
         $story = $row['story'];
         $uploader = $row['username'];
         $story_link = $row['link'];
+        echo '<div id="comment_story"><span class="comment_story_username">';
+        echo htmlentities($uploader);
+        echo ": </span>";
         echo htmlentities($story);
         echo "\t" ;
-        echo htmlentities($uploader);
-        echo "\t" ;
-        echo htmlentities($story_link);
-        echo "<ul>\n";
+        echo '<a href="'.htmlentities($story_link).'">Link</a>';
+        echo '</div>';
         $query_story->close();
 
 
         //query for comments
         $query_comments->execute();
-        $query_comments->bind_result($current_comments, $commented_users);
+        $query_comments->bind_result($current_comments, $commented_users,$comment_id);
+        echo '<div id="comments">';
         while($query_comments->fetch()){
-            printf("\t<li>%s %s</li>\n",
-                htmlspecialchars($current_comments),
-                htmlspecialchars($commented_users)
-            );
+            //display each comment
+            echo '<div>';
+            echo '<span class="comment_username">';
+            echo htmlspecialchars($commented_users);
+            echo ': </span><span class="comment_content">';
+            echo htmlspecialchars($current_comments);
+            echo '</span>';
+            
+            //display delete button only to the user who posted the story
+            if(isset($_SESSION["username"])){
+                if($_SESSION["username"]==$commented_users){
+                    
+                    ?>
+                    <form action ="delete_comment.php" method="POST" class="buttons">
+                    <input type="submit" value="Delete" name="delete">
+                    <input type="hidden" value="<?php echo $comment_id;?>" name="comment_to_delete">
+                    </form>
+                    <?php
+                    
+                }
+            }
+            ?>
+
+            </div>
+            <?php
         }
-        echo "</ul>\n";
+        echo '</div>';
+        
+       
 
         $query_comments->close();
     ?>
 
+    <?php
+    //$story_id=$_SESSION["story_id"];
+   
+    if(isset($_SESSION["username"])!=null){
+        $username=$_SESSION["username"];
+        ?>
+        <form action="addcomment.php" method="POST" id="add_comment_form">
+            <div>Add new comment:</div>
+            <textarea name="comment_text" id="new_comment_input"></textarea>
+            <input type="hidden" name="commented_user" value="<?php echo $username;?>">
+            <input type="hidden" name="token2" value="<?php echo $_SESSION['token'];?>" >
+            <input type="hidden" value="<?php echo $story_id;?>" name="story_id">
+            <input type="submit" value="Comment" name="comment_button" id="comment_button">
+        </form>
+        <?php
+    }
+   
+    ?>
     <!--comment success-->
     
     <a href="main.php">Back to Main Page</a>

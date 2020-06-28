@@ -53,6 +53,9 @@
                 header("Location: main.php");
                 exit;
             }
+            else{
+                echo "Username or password is not valid";
+            }
     
             $stmt->close();
         }

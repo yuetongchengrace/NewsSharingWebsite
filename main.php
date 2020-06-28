@@ -13,7 +13,7 @@
     ?>
     <!--Logout button-->
     <div>
-        <form method="POST" action="logout.php" id="logout">
+        <form method="POST" action="logout.php" class="logout">
             <?php
                 echo "User: ";
                 if(isset($_SESSION["username"])!=null){
