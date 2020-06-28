@@ -5,6 +5,10 @@ if(isset($_POST['comment_button'])){
     if(!hash_equals($_SESSION['token'], $_POST['token2'])){
         die("Request forgery detected");
     }
+    if($_POST['comment_text']==null){
+        header("Location: comment.php");
+        exit;
+    }
     require 'database.php';
     $username = (String)$_SESSION["username"];
     $comment = (String)$_POST['comment_text'];
