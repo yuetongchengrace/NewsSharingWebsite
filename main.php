@@ -112,7 +112,7 @@
         <input type="hidden" value="<?php echo $username;?>" name="each_post_user"/>
         <input type="hidden" value="<?php echo $story;?>" name="each_post_story"/>
         <input type="hidden" value="<?php echo $link;?>" name="each_post_link"/>
-        <input type="hidden" value="<?php echo $story_id;?>" name="story_id"/>
+        <input type="hidden" value="<?php echo $story_id;?>" name="each_story_id"/>
         <!--<input type="hidden" value="story_id"-->
         <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
         </form>

@@ -12,8 +12,8 @@
     session_start();
     $username=$_SESSION["username"];
     //$story_id=$_SESSION["story_id"];
-    if(!isset($_SESSION["story_id"])){
-        $_SESSION["story_id"]=$_POST['story_id'];
+    if(isset($_POST['each_story_id'])){
+    $_SESSION["story_id"]=$_POST['each_story_id'];
     }
     $story_id= $_SESSION["story_id"];
     ?>
