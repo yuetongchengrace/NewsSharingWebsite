@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="main.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Files</title>
+    <title>News Articles</title>
 </head>
 <body> 
     <?php
@@ -49,12 +49,12 @@
                         echo "Please enter something for your story";
                     }
                     else{
-                        $current_user=$_SESSION["username"];
+                        $current_user=(String)$_SESSION["username"];
                         echo "nice you are logged in!";
                         require 'database.php';
-                        $new_user=$_POST['new_story_user'];
-                        $new_story=$_POST['new_story_input'];
-                        $new_link=$_POST['new_link_input'];
+                        $new_user=(String)$_POST['new_story_user'];
+                        $new_story=(String)$_POST['new_story_input'];
+                        $new_link=(String)$_POST['new_link_input'];
                         $stmt = $mysqli->prepare("insert into posts (username, story, link) values (?, ?, ?)");
                         if(!$stmt){
                             printf("Query Prep Failed: %s\n", $mysqli->error);
@@ -91,7 +91,7 @@
 
     $stmt->execute();
 
-    $stmt->bind_result($story_id,$username, $story, $link);
+    $stmt->bind_result($story_id, $username, $story, $link);
 
     echo '<div id="stories">';
     while($stmt->fetch()){
@@ -120,15 +120,16 @@
         //display delete button only to the user who posted the story
         if(isset($_SESSION["username"])){
             if($_SESSION["username"]==$username){
-                //$_SESSION["story_id"]=$story_id;
                 ?>
                 <form action ="delete_story.php" method="POST" class="buttons">
                 <input type="submit" value="Delete" name="delete">
                 <input type="hidden" value="<?php echo $story_id;?>" name="story_to_delete">
+                <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
                 </form>
                 <form action ="edit_story.php" method="POST" class="buttons">
                 <input type="submit" value="Edit" name="edit">
                 <input type="hidden" value="<?php echo $story_id;?>" name="story_to_edit">
+                <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
                 </form>
                 <?php
                 

@@ -8,11 +8,15 @@
     <title>Document</title>
 </head>
 <body>
-
+<!--delete a story from database-->
     <?php  
     session_start();
+    if(!hash_equals($_SESSION['token'], $_POST['token'])){
+        die("Request forgery detected");
+    }
     $story_id=$_POST['story_to_delete'];
     require 'database.php';
+    //first delete the comments that are linked to the story
     $stmt1 = $mysqli->prepare("delete from comments where story_id=?");
     if(!$stmt1){
         printf("Query Prep Failed: %s\n", $mysqli->error);
@@ -21,7 +25,7 @@
     $stmt1->bind_param('i', $story_id);
     $stmt1->execute();
     $stmt1->close();
-
+    //prepare to delete the story from table posts
     $stmt2 = $mysqli->prepare("delete from posts where story_id=?");
     if(!$stmt2){
         printf("Query Prep Failed: %s\n", $mysqli->error);

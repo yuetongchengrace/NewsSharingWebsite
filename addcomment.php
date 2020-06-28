@@ -10,11 +10,12 @@ if(isset($_POST['comment_button'])){
         exit;
     }
     require 'database.php';
+    //FIEO
     $username = (String)$_SESSION["username"];
     $comment = (String)$_POST['comment_text'];
     $story_id = $_POST["story_id"];
     
-
+    //insert into table comments 
     $stmt = $mysqli->prepare("insert into comments (username, comment, story_id) values (?, ?, ?) ");
     if(!$stmt){
         printf("Query Prep Failed: %s\n", $mysqli->error);

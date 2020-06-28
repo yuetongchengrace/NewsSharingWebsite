@@ -11,33 +11,41 @@
     
     <?php
         session_start();
-
-        if(isset($_POST['edited_comment'])){
+        //first check if the form to edit comment in below is submitted
+        if(isset($_POST['edited_comment'])&&isset($_POST['edit'])){
             
-            if(isset($_POST['edit'])){
-                require 'database.php';
-                $edited_comment=$_POST['edited_comment'];
-                $comment_id=$_POST['comment_to_edit'];
-                
-                $stmt = $mysqli->prepare("update comments set comment='$edited_comment' where comment_id=?");
-                
-                if(!$stmt){
-                    printf("Query Prep Failed: %s\n", $mysqli->error);
-                    exit;
-                }
-                
-                $stmt->bind_param('i', $comment_id);
-                
-                $stmt->execute();
-                
-                $stmt->close();
-                
+            if(!hash_equals($_SESSION['token'], $_POST['token'])){
+                die("Request forgery detected");
             }
+
+            require 'database.php';
+            $edited_comment=(String)$_POST['edited_comment'];
+            $comment_id=$_POST['comment_to_edit'];
+
+            //update the table comments according to the edited version of comment
+            $stmt = $mysqli->prepare("update comments set comment='$edited_comment' where comment_id=?");
+            
+            if(!$stmt){
+                printf("Query Prep Failed: %s\n", $mysqli->error);
+                exit;
+            }
+            
+            $stmt->bind_param('i', $comment_id);
+            
+            $stmt->execute();
+            
+            $stmt->close();
+                
             header("location: edit_comment_success.php");
             exit;
         }
 
         require 'database.php';
+        
+        if(!hash_equals($_SESSION['token'], $_POST['token'])){
+            die("Request forgery detected");
+        }
+
         $comment_id=$_POST['comment_to_edit'];
         $query_comment=$mysqli->prepare("select comment from comments where comment_id='$comment_id'");
         if(!$query_comment){
@@ -52,11 +60,12 @@
         
     ?>
 
-
+<!--text field to edit the comment-->
     <form action="edit_comment.php" method="POST">
         <input type="hidden" value="<?php echo $comment_id;?>" name="comment_to_edit">
         <input type="text" value="<?php echo $comment;?>" name="edited_comment">
         <input type="submit" value="Edit" name="edit">
+        <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
     </form>
 </body>
 </html>

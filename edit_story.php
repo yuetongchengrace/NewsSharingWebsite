@@ -12,13 +12,18 @@
     <?php
         session_start();
 
-        if(isset($_POST['edited_story'])){
+        //first check if the form to edit story in below is submitted
+        if(isset($_POST['edited_story'])&&isset($_POST['edit'])){
             
-            if(isset($_POST['edit'])){
-                require 'database.php';
-                $edited_story=$_POST['edited_story'];
-                $story_id=$_POST['story_to_edit'];
+                if(!hash_equals($_SESSION['token'], $_POST['token'])){
+                    die("Request forgery detected");
+                }
                 
+                require 'database.php';
+                $edited_story=(String)$_POST['edited_story'];
+                $story_id=$_POST['story_to_edit'];
+
+                //update the table posts according to the edited version of story
                 $stmt = $mysqli->prepare("update posts set story='$edited_story' where story_id=?");
                 
                 if(!$stmt){
@@ -32,11 +37,14 @@
                 
                 $stmt->close();
                 
-            }
+            
             header("location: edit_success.php");
             exit;
         }
 
+        if(!hash_equals($_SESSION['token'], $_POST['token'])){
+            die("Request forgery detected");
+        }
         require 'database.php';
         $story_id=$_POST['story_to_edit'];
         $query_story=$mysqli->prepare("select story from posts where story_id='$story_id'");
@@ -57,6 +65,7 @@
         <input type="hidden" value="<?php echo $story_id;?>" name="story_to_edit">
         <input type="text" value="<?php echo $story;?>" name="edited_story">
         <input type="submit" value="Edit" name="edit">
+        <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
     </form>
 </body>
 </html>

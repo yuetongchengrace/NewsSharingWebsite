@@ -8,6 +8,7 @@
     <title>Sign up</title>
 </head>
 <body>
+    <!--form for sign up-->
     <form action="signup.php" method="POST" id="sign_up_form">
         <span class="big">Username:</span><br>
         <input type="text" name="username" id="signup_username"/> <br><br>
@@ -22,13 +23,17 @@
     <?php
         if(isset($_POST['submit'])&&$_POST['username']!=null&&$_POST['password']!=null){
             require 'database.php';
+            //check if password confirmation is successful
             if($_POST['password']!=$_POST['confirm_password']){
                 echo "Password Does Not Match";
             }
             else{
                 $username = (String)$_POST['username'];
+
+                //salt and hash password
                 $hashed_password = password_hash((String)$_POST['password'], PASSWORD_DEFAULT);
 
+                //add user to table users
                 $stmt = $mysqli->prepare("insert into users (username, password) values (?, ?)");
                 if(!$stmt){
                     printf("Query Prep Failed: %s\n", $mysqli->error);

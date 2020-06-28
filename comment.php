@@ -38,6 +38,7 @@
             die("Request forgery detected");
             }
         }
+        //prepare queries for story and comments
         $query_story=$mysqli->prepare("select story, username, link from posts where story_id='$story_id'");
         $query_comments=$mysqli->prepare("select comment, username,comment_id from comments where story_id='$story_id'");
         if(!$query_story || !$query_comments){
@@ -74,7 +75,7 @@
             echo htmlspecialchars($current_comments);
             echo '</span>';
             
-            //display delete button only to the user who posted the story
+            //display delete button and edit button only to the user who posted the story
             if(isset($_SESSION["username"])){
                 if($_SESSION["username"]==$commented_users){
                     
@@ -82,11 +83,13 @@
                     <form action ="delete_comment.php" method="POST" class="buttons">
                     <input type="submit" value="Delete" name="delete">
                     <input type="hidden" value="<?php echo $comment_id;?>" name="comment_to_delete">
+                    <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
                     </form>
 
                     <form action ="edit_comment.php" method="POST" class="buttons">
                     <input type="submit" value="Edit" name="edit">
                     <input type="hidden" value="<?php echo $comment_id;?>" name="comment_to_edit">
+                    <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
                     </form>
 
                     <?php
@@ -106,8 +109,7 @@
     ?>
 
     <?php
-    //$story_id=$_SESSION["story_id"];
-   
+    //add new comment
     if(isset($_SESSION["username"])!=null){
         $username=$_SESSION["username"];
         ?>
@@ -123,7 +125,6 @@
     }
    
     ?>
-    <!--comment success-->
     
     <a href="main.php">Back to Main Page</a>
 </body>

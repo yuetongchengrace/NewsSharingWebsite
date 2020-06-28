@@ -8,6 +8,7 @@
     <title>Log In</title>
 </head>
 <body>
+    <!--form for log in-->
     <form action="login.php" method="POST" id="log_in_form">
         <span class="big">Username:</span>
         <input type="text" name="username" id="login_username"/>
@@ -16,7 +17,11 @@
         <input type="submit" value="Login" name="submit1" class="login_page_buttons"/>
         <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
     </form>
+
+    <!--form for sign up-->
     <div id="sign_up_link"><a href="signup.php">Click to sign up</a></div>
+
+    <!--form for guest user-->
     <form action="main.php" method="POST" id="log_in_as_visitor">
         <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
         Don't want to sign up?
@@ -24,6 +29,7 @@
     </form>
 
     <?php
+        
         if(isset($_POST['submit2'])){
             session_start();
             $_SESSION["token"]=bin2hex(openssl_random_pseudo_bytes(32));
@@ -35,6 +41,7 @@
             $input_password=(String)$_POST['password'];
             require 'database.php';
 
+            //perpare login for user
             $stmt = $mysqli->prepare("select * from users where username='$username'");
             if(!$stmt){
                 printf("Query Prep Failed: %s\n", $mysqli->error);
@@ -46,8 +53,10 @@
             $row = $result->fetch_assoc();
             $hashed_password = $row['password'];
 
+            //verify password
             if(password_verify($input_password, $hashed_password)){
                 session_start();
+                //set token
                 $_SESSION["token"]=bin2hex(openssl_random_pseudo_bytes(32));
                 $_SESSION["username"]=$username;
                 header("Location: main.php");
