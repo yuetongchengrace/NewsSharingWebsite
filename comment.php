@@ -10,26 +10,34 @@
 <body>
     <?php
     session_start();
-    $username=$_SESSION["username"];
+    
     //$story_id=$_SESSION["story_id"];
     if(isset($_POST['each_story_id'])){
     $_SESSION["story_id"]=$_POST['each_story_id'];
     }
     $story_id= $_SESSION["story_id"];
-    ?>
-    
-    <form action="addcomment.php" method="POST">
+    if(isset($_SESSION["username"])!=null){
+        $username=$_SESSION["username"];
+        ?>
+        <form action="addcomment.php" method="POST">
         <input type="text" name="comment_text" id="new_comment_input">
         <input type="hidden" name="commented_user" value="<?php echo $username;?>">
         <input type="hidden" name="token2" value="<?php echo $_SESSION['token'];?>" >
         <input type="hidden" value="<?php echo $story_id;?>" name="story_id">
         <input type="submit" value="Comment" name="comment_button">
-    </form>
-
+        </form>
+        <?php
+    }
+   
+    ?>
+    
+    
     <?php
         require 'database.php';
-        if(isset($_POST['token'])&&!hash_equals($_SESSION['token'], $_POST['token'])){
+        if(isset($_POST['token'])&&isset($_SESSION['token'])){
+            if(!hash_equals($_SESSION['token'], $_POST['token'])){
             die("Request forgery detected");
+            }
         }
         $query_story=$mysqli->prepare("select story, username, link from posts where story_id='$story_id'");
         $query_comments=$mysqli->prepare("select comment, username from comments where story_id='$story_id'");
