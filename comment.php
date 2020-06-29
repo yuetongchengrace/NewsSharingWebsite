@@ -39,8 +39,8 @@
             }
         }
         //prepare queries for story and comments
-        $query_story=$mysqli->prepare("select story, username, link from posts where story_id='$story_id'");
-        $query_comments=$mysqli->prepare("select comment, username,comment_id from comments where story_id='$story_id'");
+        $query_story=$mysqli->prepare("select story, username, link,added_time from posts where story_id='$story_id'");
+        $query_comments=$mysqli->prepare("select comment, username,comment_id,added_time from comments where story_id='$story_id'");
         if(!$query_story || !$query_comments){
             printf("Query Prep Failed: %s\n", $mysqli->error);
             exit;
@@ -52,19 +52,22 @@
         $story = $row['story'];
         $uploader = $row['username'];
         $story_link = $row['link'];
+        $story_time=$row['added_time'];
         echo '<div id="comment_story"><span class="comment_story_username">';
         echo htmlentities($uploader);
         echo ": </span>";
         echo htmlentities($story);
         echo "\t" ;
         echo '<a href="'.htmlentities($story_link).'">Link</a>';
-        echo '</div>';
+        echo '<span class="post_time">';
+        echo htmlspecialchars($story_time);
+        echo '</span></div>';
         $query_story->close();
 
 
         //query for comments
         $query_comments->execute();
-        $query_comments->bind_result($current_comments, $commented_users,$comment_id);
+        $query_comments->bind_result($current_comments, $commented_users,$comment_id,$comment_time);
         echo '<div id="comments">';
         while($query_comments->fetch()){
             //display each comment
@@ -73,12 +76,13 @@
             echo htmlspecialchars($commented_users);
             echo ': </span><span class="comment_content">';
             echo htmlspecialchars($current_comments);
-            echo '</span>';
+            echo '</span><span class="post_time">';
+            echo htmlspecialchars($comment_time);
             
-            //like and unlike
+            
             if(isset($_SESSION["username"])){
+                //display like and unlike only to registered users
                 ?>
-
                <form action="change_likes.php" method="POST" class="buttons">
                     <input type="submit" value="Like" name="like_button">
                     <input type="hidden" value="<?php echo $comment_id;?>" name="comment_to_change_like">

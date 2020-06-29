@@ -17,8 +17,8 @@
     $comment_id=$_POST['comment_to_delete'];
     echo $comment_id;
     require 'database.php';
-    //prepare to delete from table comments
-    $stmt = $mysqli->prepare("delete from comments where comment_id=?");
+    //prepare to delete from table likes
+    $stmt = $mysqli->prepare("delete from likes where comment_id=?");
     if(!$stmt){
         printf("Query Prep Failed: %s\n", $mysqli->error);
         exit;
@@ -29,6 +29,18 @@
     $stmt->execute();
     
     $stmt->close();
+    //prepare to delete from table comments
+    $stmt2 = $mysqli->prepare("delete from comments where comment_id=?");
+    if(!$stmt2){
+        printf("Query Prep Failed: %s\n", $mysqli->error);
+        exit;
+    }
+    
+    $stmt2->bind_param('i', $comment_id);
+    
+    $stmt2->execute();
+    
+    $stmt2->close();
     
     header("Location: comment.php");
     exit;

@@ -16,7 +16,39 @@
     }
     $story_id=$_POST['story_to_delete'];
     require 'database.php';
-    //first delete the comments that are linked to the story
+    //first select all comments that are linked to the story
+    $stmt=$mysqli->prepare("select comment_id from comments where story_id=$story_id");
+    if(!$stmt){
+        printf("Query Prep Failed: %s\n", $mysqli->error);
+        exit;
+    }
+    $stmt->execute();
+
+    $stmt->bind_result($comment_id);
+
+    $comment_ids = array();
+    while($stmt->fetch()){
+        array_push( $comment_ids,$comment_id);
+    }
+    $stmt->close();
+
+    //delete comment from table likes
+    foreach($comment_ids as $comment){
+        
+        $stmt3 = $mysqli->prepare("delete from likes where comment_id=?");
+        if(!$stmt3){
+            printf("Query Prep Failed: %s\n", $mysqli->error);
+            exit;
+        }
+        
+        $stmt3->bind_param('i', $comment);
+        
+        $stmt3->execute();
+        
+        $stmt3->close();
+    }
+    
+    //delete comment from table comments
     $stmt1 = $mysqli->prepare("delete from comments where story_id=?");
     if(!$stmt1){
         printf("Query Prep Failed: %s\n", $mysqli->error);
@@ -25,7 +57,8 @@
     $stmt1->bind_param('i', $story_id);
     $stmt1->execute();
     $stmt1->close();
-    //prepare to delete the story from table posts
+
+    //delete the story from table posts
     $stmt2 = $mysqli->prepare("delete from posts where story_id=?");
     if(!$stmt2){
         printf("Query Prep Failed: %s\n", $mysqli->error);
@@ -37,6 +70,7 @@
     
     header("Location: main.php");
     exit;
+
     ?>
 </body>
 </html>
