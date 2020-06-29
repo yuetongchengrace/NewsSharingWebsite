@@ -30,32 +30,38 @@ a:hover{
 .sort{
     display:inline-block;
     margin-top:0px;
+    position:relative;
 }
-
+.sort input[type="submit"]{
+    font-size:18px;
+}
 #sort_new{
-    position:relative;
-    
-    
+    margin-left:13%;
+    margin-top:15px;
 }
-
-#sort_edited{
-    position:relative;
-    
-}
-
 #undo_sort{
-    position:relative;
-    
+    margin-left:13%;
 }
-
-#show_all{
+#undo_sort input[type="submit"]{
+    font-size:18px;
+}
+#show_all , #undo_show_all{
     margin-top:50px;
 }
+#show_all input[type="submit"], #undo_show_all input[type="submit"]{
+    font-size:18px;
+}
 .logout{
-    position:absolute;
-    right:5%;
-    top:1%;
-    
+    position:relative;
+    float:right;
+    margin-right:1%;
+    font-size:30px;
+}
+
+.logout input[type="submit"]{
+    font-size:25px;
+    padding-left:10px;
+    padding-right:10px;
 }
 #new_post{
     position:relative;

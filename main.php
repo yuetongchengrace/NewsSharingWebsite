@@ -16,16 +16,15 @@
         <form method="POST" action="logout.php" class="logout">
             <?php
                 echo "User: ";
-                if(isset($_SESSION["username"])!=null){
+                if(isset($_SESSION["username"])){
                     echo htmlentities($_SESSION["username"]);
-                    echo '<input type="submit" value="Logout"/>';
+                    echo '<input type="submit" name="Logout" value="Logout"/>';
                 }
                 else{
                     echo "Visitor";
-                    echo '<input type="submit" value="Login as user"/>';
+                    echo '<input type="submit" name="Logout" value="Login as user"/>';
                 }
             ?>
-            
         </form> 
     </div>
     <!--Sort by most recent added post button-->
@@ -101,8 +100,18 @@
     require 'database.php';
     $limit=5;
     
+    //session variable for show all
+    if(isset($_POST["show_all_button"])){
+        $_SESSION['show_all']=true;
+    }
+
+    if(isset($_POST["undo_show_all_button"])){
+        unset($_SESSION['show_all']);
+    }
+
+    //display stories according to specific conditions(sort&show all)
     if(isset($_SESSION['sort_new'])){
-        if(isset($_POST["show_all_button"])){
+        if(isset($_SESSION["show_all"])){
             $stmt = $mysqli->prepare("select story_id,username, story, link, added_time from posts order by added_time DESC");
         
         }else{
@@ -111,7 +120,7 @@
 
     }
     else if(isset($_SESSION['sort_edited'])){
-        if(isset($_POST["show_all_button"])){
+        if(isset($_SESSION["show_all"])){
             $stmt = $mysqli->prepare("select story_id,username, story, link, added_time from posts order by edited_time DESC");
             
         }
@@ -120,7 +129,7 @@
         }
     }
     else{
-        if(isset($_POST["show_all_button"])){
+        if(isset($_SESSION["show_all"])){
             $stmt = $mysqli->prepare("select story_id,username, story, link, added_time from posts");
         }
         else{
@@ -186,19 +195,29 @@
 
         </div>
         <?php
-    }   
+    }
+    //display show all or undo show all button according to session show all variable   
     $stmt->close();
-    if(!isset($_POST["show_all_button"])){
+    if(isset($_SESSION['show_all'])){
+        ?>
+        <div id="undo_show_all">
+        <form action="main.php" method="POST">
+        <input type="submit" value="undo show all stories" name="undo_show_all_button">
+        </form>
+        </div>
+        <?php
+        
+    }
+    if(!isset($_SESSION['show_all'])){
     ?>
-    
     <div id="show_all">
         <form action="main.php" method="POST">
-        <input type="submit" value="show all stories" name="show_all_button"></button>
+        <input type="submit" value="show all stories" name="show_all_button">
         </form>
         
     </div>
     <?php
-    echo '</div>';
+   
     }
     ?>
     </div>
