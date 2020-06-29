@@ -1,0 +1,109 @@
+<?php
+
+    session_start();
+    if(isset($_POST['like_button'])){
+        require 'database.php';
+        if(!hash_equals($_SESSION['token'], $_POST['token'])){
+            die("Request forgery detected");
+        }
+        $liked_user = (String)$_SESSION['username'];
+        $liked_comment = $_POST['comment_to_change_like'];
+        $exist = $mysqli->prepare("select * from likes where username='$liked_user' and comment_id=$liked_comment");
+        if(!$exist){
+            printf("Query Prep Failed: %s\n", $mysqli->error);
+            exit;
+        }
+        $exist->execute();
+        $result = $exist->get_result();
+        $row = $result->fetch_assoc();
+
+        if($row!=null){
+            echo "Oops, you can't like it twice";
+        }
+
+        //insert into likes according to user and the specific comment
+        else{
+            $stmt1 = $mysqli->prepare("insert into likes (comment_id, username) values (?, ?)");
+            if(!$stmt1){
+                printf("Query Prep Failed: %s\n", $mysqli->error);
+                exit;
+            }
+            $stmt1->bind_param('is', $liked_comment, $liked_user);
+            $stmt1->execute();
+            $stmt1->close();
+
+            //fetch number of likes from table comments
+            $query = $mysqli->prepare("select likes from comments where comment_id=$liked_comment");
+            $query->execute();
+            $result = $query->get_result();
+            $row = $result->fetch_assoc();
+            if($row==null){
+                $n=0;
+            }
+            else{
+                $n = $row['likes'];
+            }
+            $query->close();
+
+            //update table comments (plus one)
+            $stmt2 = $mysqli->prepare("update comments set likes=$n+1 where comment_id=$liked_comment");
+            if(!$stmt2){
+                printf("Query Prep Failed: %s\n", $mysqli->error);
+                exit;
+            }
+            $stmt2->execute();
+            $stmt2->close();
+            echo 'You have liked a comment!';
+        }
+        
+    }
+        
+    
+    
+    //code below is not used but it is here for future improvement
+    elseif(isset($_POST['unlike_button'])){
+        require 'database.php';
+
+        //delete from likes according to user and the specific comment
+        $unliked_user = (String)$_SESSION['username'];
+        $unliked_comment = $_POST['comment_to_change_like'];
+
+        $stmt1 = $mysqli->prepare("delete from likes where username=$unliked_user AND comment_id=$unliked_comment");
+        if(!$stmt1){
+            printf("Query Prep Failed: %s\n", $mysqli->error);
+            exit;
+        }
+
+        $stmt1->execute();
+        $stmt1->close();
+
+        //fetch number of likes from table comments
+        $query = $mysqli->prepare("select likes from comments where comment_id=$unliked_comment");
+        $query->execute();
+        $result = $query->get_result();
+        $row = $result->fetch_assoc();
+        if($row==null){
+            $n=0;
+        }
+        else{
+            $n = $row['likes'];
+        }
+        $query->close();
+
+        //update table comments (minus one)
+        $stmt2 = $mysqli->prepare("update comments set likes=$n-1 where comment_id=$unliked_comment");
+        if(!$stmt2){
+            printf("Query Prep Failed: %s\n", $mysqli->error);
+            exit;
+        }
+        $stmt2->execute();
+        $stmt2->close();
+
+
+    }
+
+    //header("location:comment.php");
+    echo '<a href="main.php">Go Back to Main Page</a>';
+
+
+?>

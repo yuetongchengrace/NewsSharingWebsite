@@ -75,8 +75,18 @@
             echo htmlspecialchars($current_comments);
             echo '</span>';
             
-            //display delete button and edit button only to the user who posted the story
+            //like and unlike
             if(isset($_SESSION["username"])){
+                ?>
+               <form action="change_likes.php" method="POST" class="buttons">
+                    <input type="submit" value="Like" name="like_button">
+                    <input type="hidden" value="<?php echo $comment_id;?>" name="comment_to_change_like">
+                    <input type="hidden" name="token" value="<?php echo $_SESSION["token"];?>" >
+                </form>
+
+                <?php
+
+                //display delete button and edit button only to the user who posted the comment
                 if($_SESSION["username"]==$commented_users){
                     
                     ?>
