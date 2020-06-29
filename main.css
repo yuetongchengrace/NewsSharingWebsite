@@ -128,8 +128,12 @@ textarea{
     display:inline-block;
 }
 /*Login.php*/
+#title{
+    margin-top:150px;
+    font-size:40px;
+}
 #log_in_form{
-    margin-top:350px;
+    margin-top:150px;
 }
 
 .big{
@@ -221,5 +225,10 @@ textarea{
 
 /*edit_comment_success.php & edit_success.php*/
 .edit{
+    margin-top:350px;
+}
+
+/*uploader.php*/
+#uploader{
     margin-top:350px;
 }

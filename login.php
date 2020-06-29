@@ -8,6 +8,7 @@
     <title>Log In</title>
 </head>
 <body>
+    <div id="title">Your Custom News Website</div>
     <!--form for log in-->
     <form action="login.php" method="POST" id="log_in_form">
         <span class="big">Username:</span>

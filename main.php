@@ -43,10 +43,36 @@
     <!--undo sort button-->
     <div id="undo_sort">
         <?php
-            if(isset($_POST["sort_edited_button"])||isset($_POST["sort_new_button"])){
+            if(isset($_POST["sort_new_button"])){
+                if(isset( $_SESSION['sort_edited'])){
+                    unset($_SESSION['sort_edited']);
+                }
+                $_SESSION['sort_new']=true;
+                
+            }
+            if(isset($_POST["sort_edited_button"])){
+                if(isset($_SESSION['sort_new'])){
+                    unset($_SESSION['sort_new']);
+                }
+                $_SESSION['sort_edited']=true;
+            }
+            if(isset($_POST["undo_sort_button1"])){
+                unset($_SESSION['sort_new']);
+            }
+            else if(isset($_POST["undo_sort_button2"])){
+                unset($_SESSION['sort_edited']);
+            }
+            if(isset($_SESSION['sort_new'])){
                 ?>
                 <form method="POST" class="sort_buttons" action="main.php">
-                <input type="submit" value="undo sort" name="undo_sort_button"/>
+                <input type="submit" value="undo sort" name="undo_sort_button1"/>
+                </form> 
+                <?php
+            }
+            if(isset($_SESSION['sort_edited'])){
+                ?>
+                <form method="POST" class="sort_buttons" action="main.php">
+                <input type="submit" value="undo sort" name="undo_sort_button2"/>
                 </form> 
                 <?php
             }
@@ -54,7 +80,7 @@
     </div>
     <!--New Post-->
     <div>
-        <form action="main.php" method="POST" id="new_post">
+        <form action="uploader.php" method="POST" id="new_post">
             <div class="post">
                 <div>Add new post:</div>
                 <textarea name="new_story_input" id="new_story_input"></textarea>
@@ -64,40 +90,7 @@
                 <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
                 <input type="text" name="new_link_input" id="new_link_input">
                 <!--Add new post to database-->
-                <?php
-                
-                if(isset($_POST['post_button'])){
-                    if(isset($_SESSION["username"])==null){
-                        echo "You need to be logged in to post anything!<br>";
-                        echo '<a href="login.php">Log in now</a>';
-                    }
-                    else if($_POST['new_story_input']==null){
-                        echo "Please enter something for your story";
-                    }
-                    else{
-                        $current_user=(String)$_SESSION["username"];  
-                        echo "nice you are logged in!";
-                        require 'database.php';
-                        $new_user=(String)$_POST['new_story_user'];
-                        $new_story=(String)$_POST['new_story_input'];
-                        $new_link=(String)$_POST['new_link_input'];
-                        $stmt = $mysqli->prepare("insert into posts (username, story, link) values (?, ?, ?)");
-                        if(!$stmt){
-                            printf("Query Prep Failed: %s\n", $mysqli->error);
-                            exit;
-                        }
 
-                        $stmt->bind_param('sss', $new_user, $new_story, $new_link);
-
-                        $stmt->execute();
-
-                        $stmt->close();
-                        
-                        header("Location: main.php");
-
-                    }
-                }
-                ?>
                 </div>
             </div>
             
@@ -107,10 +100,9 @@
     <?php
     require 'database.php';
     $limit=5;
-
-    if(isset($_POST["sort_new_button"])){
+    
+    if(isset($_SESSION['sort_new'])){
         if(isset($_POST["show_all_button"])){
-            echo "Your clicked sort new and show all";
             $stmt = $mysqli->prepare("select story_id,username, story, link, added_time from posts order by added_time DESC");
         
         }else{
@@ -118,7 +110,7 @@
         }
 
     }
-    else if(isset($_POST["sort_edited_button"])){
+    else if(isset($_SESSION['sort_edited'])){
         if(isset($_POST["show_all_button"])){
             $stmt = $mysqli->prepare("select story_id,username, story, link, added_time from posts order by edited_time DESC");
             
@@ -171,7 +163,7 @@
         <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
         </form>
         <?php
-        //display delete button only to the user who posted the story
+        //display delete an edit button only to the user who posted the story
         if(isset($_SESSION["username"])){
             if($_SESSION["username"]==$username){
                 ?>
@@ -196,7 +188,9 @@
         <?php
     }   
     $stmt->close();
+    if(!isset($_POST["show_all_button"])){
     ?>
+    
     <div id="show_all">
         <form action="main.php" method="POST">
         <input type="submit" value="show all stories" name="show_all_button"></button>
@@ -205,6 +199,8 @@
     </div>
     <?php
     echo '</div>';
+    }
     ?>
+    </div>
 </body>
 </html>
