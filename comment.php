@@ -139,7 +139,10 @@
             echo htmlspecialchars($comment_time);
             echo '</span><span>';
             echo htmlspecialchars($comment_likes);
-            if($comment_likes==1){
+            if($comment_likes==null){
+                echo '</span>';
+            }
+            else if($comment_likes==1){
                 echo 'like </span>';
             }
             else{
