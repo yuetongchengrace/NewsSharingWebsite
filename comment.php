@@ -78,6 +78,7 @@
             //like and unlike
             if(isset($_SESSION["username"])){
                 ?>
+
                <form action="change_likes.php" method="POST" class="buttons">
                     <input type="submit" value="Like" name="like_button">
                     <input type="hidden" value="<?php echo $comment_id;?>" name="comment_to_change_like">

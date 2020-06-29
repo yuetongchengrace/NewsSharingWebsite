@@ -1,4 +1,15 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="main.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="change_likes">
+    <?php
 
     session_start();
     if(isset($_POST['like_button'])){
@@ -58,8 +69,8 @@
         
     }
         
-    
-    
+
+
     //code below is not used but it is here for future improvement
     elseif(isset($_POST['unlike_button'])){
         require 'database.php';
@@ -103,7 +114,10 @@
     }
 
     //header("location:comment.php");
-    echo '<a href="main.php">Go Back to Main Page</a>';
+    echo '<a href="comment.php">Go Back to Comment Page</a>';
 
 
-?>
+    ?></div>
+</body>
+</html>
+
