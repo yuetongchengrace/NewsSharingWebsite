@@ -44,11 +44,11 @@ input[type="submit"]:hover{
     font-size:18px;
 }
 #sort_new{
-    margin-left:5%;
+    margin-left:8%;
     margin-top:15px;
 }
 #undo_sort{
-    margin-left:12%;
+    margin-left:15%;
 }
 .undo_sort input[type="submit"]{
     font-size:18px;

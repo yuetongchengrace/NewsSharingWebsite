@@ -113,84 +113,117 @@
         $story_link = $row['link'];
         $story_time=$row['added_time'];
         echo '<div id="comment_story"><span class="comment_story_username">';
-        echo htmlentities($uploader);
+        echo htmlentities((String)$uploader);
         echo ": </span>";
-        echo htmlentities($story);
+        echo htmlentities((String)$story);
         echo "\t" ;
-        echo '<a href="'.htmlentities($story_link).'">Link</a>';
+        echo '<a href="'.htmlentities((String)$story_link).'">Link</a>';
         echo '<span class="post_time">';
         echo htmlspecialchars($story_time);
         echo '</span></div>';
         $query_story->close();
 
 
+
         //query for comments
         $query_comments->execute();
         $query_comments->bind_result($current_comments, $commented_users,$comment_id,$comment_time,$comment_likes);
         echo '<div id="comments">';
+        $comment_array=array(array());
+        $m=0;
         while($query_comments->fetch()){
-            //display each comment
-            echo '<div>';
-            echo '<span class="comment_username">';
-            echo htmlspecialchars($commented_users);
-            echo ': </span><span class="comment_content">';
-            echo htmlspecialchars($current_comments);
-            echo '</span><span class="post_time_comments">';
-            echo htmlspecialchars($comment_time);
-            echo '</span><span>';
-            echo htmlspecialchars($comment_likes);
-            if($comment_likes==null){
-                echo '</span>';
-            }
-            else if($comment_likes==1){
-                echo 'like </span>';
-            }
-            else{
-                echo 'likes </span>';
-            }
             
-            
-            if(isset($_SESSION["username"])){
-                //display like and unlike only to registered users
-                ?>
-               <form action="change_likes.php" method="POST" class="buttons">
-                    <input type="submit" value="Like" name="like_button">
-                    <input type="hidden" value="<?php echo $comment_id;?>" name="comment_to_change_like">
-                    <input type="hidden" name="token" value="<?php echo $_SESSION["token"];?>" >
-                </form>
+            $comment_array[$m][0]=$current_comments;
+            $comment_array[$m][1]=$commented_users;
+            $comment_array[$m][2]=$comment_id;
+            $comment_array[$m][3]=$comment_time;
+            $comment_array[$m][4]=$comment_likes;
+            $m+=1;
+        }
+        $query_comments->close();
 
-                <?php
-
-                //display delete button and edit button only to the user who posted the comment
-                if($_SESSION["username"]==$commented_users){
-                    
-                    ?>
-                    <form action ="delete_comment.php" method="POST" class="buttons">
-                    <input type="submit" value="Delete" name="delete">
-                    <input type="hidden" value="<?php echo $comment_id;?>" name="comment_to_delete">
-                    <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
-                    </form>
-
-                    <form action ="edit_comment.php" method="POST" class="buttons">
-                    <input type="submit" value="Edit" name="edit">
-                    <input type="hidden" value="<?php echo $comment_id;?>" name="comment_to_edit">
-                    <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
-                    </form>
-
-                    <?php
-                    
+        if(isset($comment_array[0][0])){
+            for($i=0;$i<count($comment_array);$i++){
+                echo '<div>';
+                echo '<span class="comment_username">';
+                echo htmlspecialchars((String)$comment_array[$i][1]);
+                echo ': </span><span class="comment_content">';
+                echo htmlspecialchars((String)$comment_array[$i][0]);
+                echo '</span><span class="post_time_comments">';
+                echo htmlspecialchars($comment_array[$i][3]);
+                echo '</span><span>';
+                echo htmlspecialchars($comment_array[$i][4]);
+                if($comment_array[$i][4]==null){
+                    echo '</span>';
                 }
+                else if($comment_array[$i][4]==1){
+                    echo 'like </span>';
+                }
+                else{
+                    echo 'likes </span>';
+                }
+                
+                $comment_id=$comment_array[$i][2];
+                if(isset($_SESSION["username"])){
+                    //display like and unlike only to registered users
+                    $liked_user = (String)$_SESSION['username'];
+                    $liked_comment = $comment_id;
+                    $exist = $mysqli->prepare("select * from likes where username='$liked_user' and comment_id=$liked_comment");
+                    if(!$exist){
+                        printf("Query Prep Failed: %s\n", $mysqli->error);
+                        exit;
+                    }
+                    $exist->execute();
+                    $result = $exist->get_result();
+                    $row = $result->fetch_assoc();
+    
+                    if($row!=null){
+                    ?>
+                        <form action="change_likes.php" method="POST" class="buttons">
+                        <input type="submit" value="unlike" name="unlike_button">
+                        <input type="hidden" value="<?php echo $comment_id;?>" name="comment_to_change_like">
+                        <input type="hidden" name="token" value="<?php echo $_SESSION["token"];?>" >
+                        </form>
+                    <?php
+                    }
+                    else{
+                    ?>
+                    <form action="change_likes.php" method="POST" class="buttons">
+                        <input type="submit" value="Like" name="like_button">
+                        <input type="hidden" value="<?php echo $comment_id;?>" name="comment_to_change_like">
+                        <input type="hidden" name="token" value="<?php echo $_SESSION["token"];?>" >
+                    </form>
+                    <?php
+                    $exist->close();
+                    }
+                    //display delete button and edit button only to the user who posted the comment
+                    if($_SESSION["username"]==(String)$comment_array[$i][1]){
+                        
+                        ?>
+                        <form action ="delete_comment.php" method="POST" class="buttons">
+                        <input type="submit" value="Delete" name="delete">
+                        <input type="hidden" value="<?php echo $comment_id;?>" name="comment_to_delete">
+                        <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
+                        </form>
+    
+                        <form action ="edit_comment.php" method="POST" class="buttons">
+                        <input type="submit" value="Edit" name="edit">
+                        <input type="hidden" value="<?php echo $comment_id;?>" name="comment_to_edit">
+                        <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
+                        </form>
+    
+                        <?php
+                        
+                    }
+                }
+                ?>
+    
+                </div>
+                <?php
+                
             }
-            ?>
-
-            </div>
-            <?php
         }
         echo '</div>';
-        
-       
-
-        $query_comments->close();
     ?>
 
     <?php

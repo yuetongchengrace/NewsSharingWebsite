@@ -71,7 +71,6 @@
         
 
 
-    //code below is not used but it is here for future improvement
     elseif(isset($_POST['unlike_button'])){
         require 'database.php';
 
@@ -79,7 +78,7 @@
         $unliked_user = (String)$_SESSION['username'];
         $unliked_comment = $_POST['comment_to_change_like'];
 
-        $stmt1 = $mysqli->prepare("delete from likes where username=$unliked_user AND comment_id=$unliked_comment");
+        $stmt1 = $mysqli->prepare("delete from likes where username='$unliked_user' AND comment_id=$unliked_comment");
         if(!$stmt1){
             printf("Query Prep Failed: %s\n", $mysqli->error);
             exit;
@@ -109,11 +108,10 @@
         }
         $stmt2->execute();
         $stmt2->close();
-
+        echo "You have successfully unliked a comment! ";
 
     }
 
-    //header("location:comment.php");
     echo '<a href="comment.php">Go Back to Comment Page</a>';
 
 

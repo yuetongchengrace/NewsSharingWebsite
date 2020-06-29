@@ -9,4 +9,4 @@
 ### Creative Portion:
  - Added **datetime** to posts and comments
  - Added **sort by new** and **sort by last edit** to posts and comments
- - Added **like** to comments
+ - Added **like and unlike** to comments
