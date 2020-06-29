@@ -30,7 +30,56 @@
             <input type="submit" value="Logout"/>
         </form> 
     </div>
-
+    <!--Sort by most recent added post button-->
+    <div class="sort" id="sort_new_comment">
+        <form method="POST" class="sort_buttons" action="comment.php">
+            <input type="submit" value="sort by newest comment" name="sort_new_comment_button"/>
+        </form> 
+    </div>
+    <!--Sort by most recent edited button-->
+    <div class="sort" id="sort_edited_comment">
+        <form method="POST" class="sort_buttons" action="comment.php">
+            <input type="submit" value="sort comments by last edit" name="sort_edited_comment_button"/>
+        </form> 
+    </div>
+    <!--undo sort button-->
+    <div class="undo_sort">
+        <?php
+            if(isset($_POST["sort_new_comment_button"])){
+                if(isset( $_SESSION['sort_edited_comment'])){
+                    unset($_SESSION['sort_edited_comment']);
+                }
+                $_SESSION['sort_new_comment']=true;
+                
+            }
+            if(isset($_POST["sort_edited_comment_button"])){
+                if(isset($_SESSION['sort_new_comment'])){
+                    unset($_SESSION['sort_new_comment']);
+                }
+                $_SESSION['sort_edited_comment']=true;
+            }
+            if(isset($_POST["undo_sort_comment_button1"])){
+                unset($_SESSION['sort_new_comment']);
+            }
+            else if(isset($_POST["undo_sort_comment_button2"])){
+                unset($_SESSION['sort_edited_comment']);
+            }
+            if(isset($_SESSION['sort_new_comment'])){
+                ?>
+                <form method="POST" class="sort_buttons" action="comment.php">
+                <input type="submit" value="undo sort" name="undo_sort_comment_button1"/>
+                </form> 
+                <?php
+            }
+            if(isset($_SESSION['sort_edited_comment'])){
+                ?>
+                <form method="POST" class="sort_buttons" action="comment.php">
+                <input type="submit" value="undo sort" name="undo_sort_comment_button2"/>
+                </form> 
+                <?php
+            }
+        ?>
+    </div>
     <?php
         require 'database.php';
         if(isset($_POST['token'])&&isset($_SESSION['token'])){
@@ -38,9 +87,19 @@
             die("Request forgery detected");
             }
         }
-        //prepare queries for story and comments
+        //prepare queries for stories
         $query_story=$mysqli->prepare("select story, username, link,added_time from posts where story_id='$story_id'");
-        $query_comments=$mysqli->prepare("select comment, username,comment_id,added_time from comments where story_id='$story_id'");
+
+        //prepare queries for comments under different sort conditions
+        if(isset($_SESSION['sort_new_comment'])){
+            $query_comments=$mysqli->prepare("select comment, username,comment_id,added_time from comments where story_id='$story_id' order by added_time DESC");
+        }
+        else if(isset($_SESSION['sort_edited_comment'])){
+            $query_comments=$mysqli->prepare("select comment, username,comment_id,edited_time from comments where story_id='$story_id' order by edited_time DESC");
+        }
+        else{
+            $query_comments=$mysqli->prepare("select comment, username,comment_id,added_time from comments where story_id='$story_id'");
+        }
         if(!$query_story || !$query_comments){
             printf("Query Prep Failed: %s\n", $mysqli->error);
             exit;

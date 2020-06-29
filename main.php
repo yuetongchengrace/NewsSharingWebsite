@@ -42,7 +42,7 @@
         </form> 
     </div>
     <!--undo sort button-->
-    <div id="undo_sort">
+    <div class="undo_sort">
         <?php
             if(isset($_POST["sort_new_button"])){
                 if(isset( $_SESSION['sort_edited'])){
