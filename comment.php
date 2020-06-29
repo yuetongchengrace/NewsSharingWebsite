@@ -92,13 +92,13 @@
 
         //prepare queries for comments under different sort conditions
         if(isset($_SESSION['sort_new_comment'])){
-            $query_comments=$mysqli->prepare("select comment, username,comment_id,added_time from comments where story_id='$story_id' order by added_time DESC");
+            $query_comments=$mysqli->prepare("select comment, username,comment_id,added_time,likes from comments where story_id='$story_id' order by added_time DESC");
         }
         else if(isset($_SESSION['sort_edited_comment'])){
-            $query_comments=$mysqli->prepare("select comment, username,comment_id,edited_time from comments where story_id='$story_id' order by edited_time DESC");
+            $query_comments=$mysqli->prepare("select comment, username,comment_id,edited_time,likes from comments where story_id='$story_id' order by edited_time DESC");
         }
         else{
-            $query_comments=$mysqli->prepare("select comment, username,comment_id,added_time from comments where story_id='$story_id'");
+            $query_comments=$mysqli->prepare("select comment, username,comment_id,added_time,likes from comments where story_id='$story_id'");
         }
         if(!$query_story || !$query_comments){
             printf("Query Prep Failed: %s\n", $mysqli->error);
@@ -126,7 +126,7 @@
 
         //query for comments
         $query_comments->execute();
-        $query_comments->bind_result($current_comments, $commented_users,$comment_id,$comment_time);
+        $query_comments->bind_result($current_comments, $commented_users,$comment_id,$comment_time,$comment_likes);
         echo '<div id="comments">';
         while($query_comments->fetch()){
             //display each comment
@@ -135,8 +135,16 @@
             echo htmlspecialchars($commented_users);
             echo ': </span><span class="comment_content">';
             echo htmlspecialchars($current_comments);
-            echo '</span><span class="post_time">';
+            echo '</span><span class="post_time_comments">';
             echo htmlspecialchars($comment_time);
+            echo '</span><span>';
+            echo htmlspecialchars($comment_likes);
+            if($comment_likes==1){
+                echo 'like </span>';
+            }
+            else{
+                echo 'likes </span>';
+            }
             
             
             if(isset($_SESSION["username"])){

@@ -226,6 +226,12 @@ textarea{
     text-align:left;
     margin-bottom:50px;
 }
+.post_time_comments{
+    margin-left:1%;
+    color:grey;
+    margin-right:1%;
+    font-size:14px;
+}
 
 /*edit_story.php*/
 #edit_story_form{

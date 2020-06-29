@@ -29,7 +29,7 @@
         $row = $result->fetch_assoc();
 
         if($row!=null){
-            echo "Oops, you can't like it twice";
+            echo "Oops, you can't like it twice! ";
         }
 
         //insert into likes according to user and the specific comment
