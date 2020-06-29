@@ -12,7 +12,7 @@
     session_start();
     ?>
     <!--Link to about us-->
-    <div class="about"><a href="about.html">About Us</a></div>
+    <div class="about"><a href="about.php">About Us</a></div>
     <!--Logout button-->
     <div>
         <form method="POST" action="logout.php" class="logout">

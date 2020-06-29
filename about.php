@@ -15,7 +15,20 @@
         Without signing up, you can view any story posted on our website. Signed up users will have extra access including posting news/comments, editing and deleting
         any previously made posts or comments. Enjoy your time on this website!
     </div>
+    <?php
+    session_start();
+    if(isset($_SESSION["username"])){
+        ?>
+        <div><a href="main.php">Back to main page</a></div>
+        <?php
+    }
+    else{
+    ?>
     <div>Already have an account? <a href="login.php">Log in now!</a></div>
     <div>Don't have an account yet? <a href="signup.php">Sign up now</a> to enjoy the best news sharing website</div>, or <a href="main.php"> visit as guest</a> now and sign up anytime u want!</div>
+    <?php
+    session_destroy();
+    }
+    ?>
 </body>
 </html>

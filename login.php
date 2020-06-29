@@ -10,7 +10,7 @@
 </head>
 <body>
     <!--Link to about us-->
-    <div class="about"><a href="about.html">About Us</a></div>
+    <div class="about"><a href="about.php">About Us</a></div>
     <div id="title">Your Custom News Website</div>
     <!--form for log in-->
     <form action="login.php" method="POST" id="log_in_form">
