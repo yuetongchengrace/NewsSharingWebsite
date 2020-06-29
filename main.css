@@ -18,7 +18,6 @@ input[type="submit"]{
 }
 
 a:link{
-    
     text-decoration: none;
 }
 
@@ -26,6 +25,11 @@ a:hover{
     color:#fffea6;
 }
 
+.about{
+    position:absolute;
+    margin-top:20px;
+    margin-left:2%;
+}
 /*main.php*/
 .sort{
     display:inline-block;
@@ -36,11 +40,11 @@ a:hover{
     font-size:18px;
 }
 #sort_new{
-    margin-left:13%;
+    margin-left:5%;
     margin-top:15px;
 }
 #undo_sort{
-    margin-left:13%;
+    margin-left:12%;
 }
 #undo_sort input[type="submit"]{
     font-size:18px;
@@ -55,11 +59,11 @@ a:hover{
     position:relative;
     float:right;
     margin-right:1%;
-    font-size:30px;
+    font-size:27px;
 }
 
 .logout input[type="submit"]{
-    font-size:25px;
+    font-size:22px;
     padding-left:10px;
     padding-right:10px;
 }
@@ -69,6 +73,9 @@ a:hover{
     margin-left:auto;
     margin-right:auto;
     width:600px;
+}
+#new_post #upload_div #new_link input[type="text"]{
+    font-size:20px;
 }
 #stories{
     background-color:#e3d3d3;
@@ -123,7 +130,9 @@ textarea{
 #post_button{
     position:relative;
     float:right;
-    margin-top:1%;
+}
+#new_post #upload_div #post_button input[type="submit"]{
+    font-size:20px;
 }
 
 #new_link{
@@ -135,8 +144,11 @@ textarea{
 }
 /*Login.php*/
 #title{
-    margin-top:150px;
-    font-size:40px;
+    font-family: 'Raleway', sans-serif;
+    display:inline-block;
+    position:relative;
+    margin-top:200px;
+    font-size:50px;
 }
 #log_in_form{
     margin-top:150px;
@@ -237,4 +249,20 @@ textarea{
 /*uploader.php*/
 #uploader{
     margin-top:350px;
+}
+
+/*about.html*/
+#about_title{
+    font-size:40px;
+    margin-top:200px;
+    margin-bottom:50px;
+    font-family: 'Raleway', sans-serif;
+}
+
+#intro{
+    margin-left:10%;
+    margin-right:10%;
+    margin-bottom:250px;
+    font-size:22px;
+    line-height: 50px;
 }

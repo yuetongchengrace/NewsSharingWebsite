@@ -11,6 +11,8 @@
     <?php
     session_start();
     ?>
+    <!--Link to about us-->
+    <div class="about"><a href="about.html">About Us</a></div>
     <!--Logout button-->
     <div>
         <form method="POST" action="logout.php" class="logout">
@@ -80,7 +82,7 @@
     <!--New Post-->
     <div>
         <form action="uploader.php" method="POST" id="new_post">
-            <div class="post">
+            <div id="upload_div" class="post">
                 <div>Add new post:</div>
                 <textarea name="new_story_input" id="new_story_input"></textarea>
                 <input type="hidden" name="new_story_user" value="<?php echo $_SESSION["username"];?>"/>
