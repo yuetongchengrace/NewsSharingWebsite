@@ -152,14 +152,15 @@
                 echo '</span><span class="post_time_comments">';
                 echo htmlspecialchars($comment_array[$i][3]);
                 echo '</span><span>';
-                echo htmlspecialchars($comment_array[$i][4]);
                 if($comment_array[$i][4]==null){
                     echo '</span>';
                 }
                 else if($comment_array[$i][4]==1){
+                    echo htmlspecialchars($comment_array[$i][4]);
                     echo 'like </span>';
                 }
                 else{
+                    echo htmlspecialchars($comment_array[$i][4]);
                     echo 'likes </span>';
                 }
                 
