@@ -81,6 +81,32 @@ input[type="submit"]:hover{
 #new_post #upload_div #new_link input[type="text"]{
     font-size:20px;
 }
+#new_story_input{
+    font-size:20px;
+    width:100%;
+    height:100px;
+    padding:1%;
+}
+textarea{
+    background-color:white;
+    resize: none;
+}
+#new_link_input{
+    margin-top:1%;
+}
+
+#post_button{
+    position:relative;
+    float:right;
+}
+#new_post #upload_div #post_button input[type="submit"]{
+    font-size:20px;
+}
+
+#new_link{
+    float:left;
+}
+
 #stories{
     background-color:#e3d3d3;
     color:#992f53;
@@ -117,32 +143,6 @@ input[type="submit"]:hover{
     margin-right:5%;
     font-size:14px;
 }
-#new_story_input{
-    font-size:20px;
-    width:100%;
-    height:100px;
-    padding:1%;
-}
-textarea{
-    background-color:white;
-    resize: none;
-}
-#new_link_input{
-    margin-top:1%;
-}
-
-#post_button{
-    position:relative;
-    float:right;
-}
-#new_post #upload_div #post_button input[type="submit"]{
-    font-size:20px;
-}
-
-#new_link{
-    float:left;
-}
-
 .buttons{
     display:inline-block;
 }
@@ -241,7 +241,7 @@ textarea{
 }
 
 .comment_content{
-    font-weight: 300;
+    font-weight:300;
     font-size:20px;
 }
 /*edit_story.php*/
@@ -275,7 +275,7 @@ textarea{
     margin-top:350px;
 }
 
-/*about.html*/
+/*about.php*/
 #about_title{
     font-size:40px;
     margin-top:200px;
@@ -298,18 +298,6 @@ textarea{
 }
 
 @media only screen and (max-width:900px){
-    #new_post{
-        width:100%;
-    }
-
-    #stories{
-        background-color:#e3d3d3;
-        color:#992f53;
-        padding:20px 2% 50px 2%;
-        width:100%;
-        margin-top:30px;
-    }
-
     /*Login.php*/
     #title{
         font-family: 'Raleway', sans-serif;
@@ -330,5 +318,108 @@ textarea{
     /*signup.php*/
     #sign_up_form{
         margin-top:100px;
+    }
+
+    /*comment.php*/
+    #add_comment_form{
+        width:85%;
+    }
+    #comment_story{
+        margin-top:20px;
+        width:85%;
+        font-size:22px;
+    }
+    .comment_story_username{
+        font-size:30px;
+    }
+    #comments{
+        padding:20px 2% 50px 2%;
+        margin-top:40px;
+        font-size:18px;
+        line-height:30px;
+        width:85%;
+        margin-left:auto;
+        margin-right:auto;
+        margin-bottom:0px;
+        text-align:left;
+    }
+    #add_comment_form{
+        margin-top:0px;
+    }
+    #sort_new_comment{
+        margin-left:0%;
+    }
+    #sort_new_comment input[type="submit"]{
+        font-size:15px;
+    }
+    #sort_edited_comment input[type="submit"]{
+        font-size:15px;
+    }
+    .undo_sort input[type="submit"]{
+        font-size:15px;
+    }
+
+    /*main.php*/
+    .about{
+        position:absolute;
+        margin-top:20px;
+        margin-left:0.5%;
+        font-size:20px;
+    }
+    .logout{
+        position:relative;
+        float:right;
+        margin-right:0;
+        font-size:23px;
+    }
+    .logout input[type="submit"]{
+        font-size:18px;
+        padding-left:5px;
+        padding-right:5px;
+    }
+    #new_post{
+        width:85%;
+    }
+    #stories{
+        background-color:#e3d3d3;
+        color:#992f53;
+        padding:20px 2% 50px 2%;
+        width:85%;
+        margin-top:70px;
+    }
+    #post_button{
+        display:inline-block;
+        text-align: right;
+    }
+    #new_link{
+        display:inline-block;
+        font-size:20px;
+        margin-top:0px;
+        padding:0px;
+        text-align:left;
+    }
+    #new_link_input{
+        width:70%;
+        margin-top:0;
+    }
+
+    #new_story_input{
+        font-size:18px;
+        width:100%;
+        height:60px;
+    }
+    /*about.php*/
+    #about_title{
+        font-size:27px;
+        margin-top:50px;
+    }
+
+    #intro{
+        margin-left:5%;
+        margin-right:5%;
+        margin-bottom:30px;
+        font-size:17px;
+        line-height: 35px;
+        text-align:left;
     }
 }

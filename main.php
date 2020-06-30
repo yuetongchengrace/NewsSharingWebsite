@@ -86,13 +86,11 @@
                 <div>Add new post:</div>
                 <textarea name="new_story_input" id="new_story_input"></textarea>
                 <input type="hidden" name="new_story_user" value="<?php echo $_SESSION["username"];?>"/>
-                <div class="post" id="post_button"><input type="submit" value="Post" name="post_button"></div>
                 <div id="new_link">Add link:
-                <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
                 <input type="text" name="new_link_input" id="new_link_input">
-                <!--Add new post to database-->
-
                 </div>
+                <div class="post" id="post_button"><input type="submit" value="Post" name="post_button"></div>
+                <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>"/>
             </div>
             
         </form>
