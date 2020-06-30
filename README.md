@@ -11,4 +11,22 @@
  - Added **sort by new**,**sort by last edit** and **undo sort** to posts and comments
  - Added **like and unlike** to comments
  - Added **About us** page where users can find out about what functions are provided on the website
+ - The same user cannot sign up for multiple times
  
+ ### Default users:
+ 
+| Username  | Password |
+| --------- | -------- |
+| test      | test     |
+| --------- | -------- |
+| test2     | test2    |
+| --------- | -------- |
+| test3     | test3    |
+| --------- | -------- |
+| test4     | test4    |
+| --------- | -------- |
+| test5     | test5    |
+| --------- | -------- |
+| test6     | test6    |
+| --------- | -------- |
+| test7     | test7    |
