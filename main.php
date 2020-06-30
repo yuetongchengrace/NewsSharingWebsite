@@ -156,9 +156,13 @@
         echo htmlspecialchars((String)$username);
         echo ':</span><span class="post_story">';
         echo htmlspecialchars((String)$story); 
-        echo '</span><span class="post_link">';
-        echo '<a href="'.htmlspecialchars($link).'">Link</a>';
-        echo '</span><span class="post_time">';
+        echo '</span>';
+        if($link!=null){
+            echo '<span class="post_link">';
+            echo '<a href="'.htmlspecialchars($link).'">Link</a>';
+            echo '</span>';
+        }
+        echo '<span class="post_time">';
         echo htmlspecialchars($time);
         echo '</span>';
         

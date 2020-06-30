@@ -117,7 +117,9 @@
         echo ": </span>";
         echo htmlentities($story);
         echo "\t" ;
-        echo '<a href="'.htmlentities($story_link).'">Link</a>';
+        if($story_link!=null){
+            echo '<a href="'.htmlentities($story_link).'">Link</a>';
+        }
         echo '<span class="post_time">';
         echo htmlspecialchars($story_time);
         echo '</span></div>';
