@@ -22,31 +22,56 @@
 
     <?php
         if(isset($_POST['submit'])){
-            if($_POST['username']!=null&&$_POST['password']!=null){
-                require 'database.php';
+            if($_POST['username']!=null&&$_POST['password']!=null){                
                 //check if password confirmation is successful
                 if($_POST['password']!=$_POST['confirm_password']){
                     echo "Password Does Not Match";
                 }
                 else{
-                    $username = (String)$_POST['username'];
+                    $check_user_not_exist=true;
+                    require 'database.php';
 
-                    //salt and hash password
-                    $hashed_password = password_hash((String)$_POST['password'], PASSWORD_DEFAULT);
-
-                    //add user to table users
-                    $stmt = $mysqli->prepare("insert into users (username, password) values (?, ?)");
-                    if(!$stmt){
+                    $stmt1 = $mysqli->prepare("select username from users");
+                    if(!$stmt1){
                         printf("Query Prep Failed: %s\n", $mysqli->error);
                         exit;
                     }
+                    $stmt1->execute();
+                    $stmt1->bind_result($username_from_table);
+                    while($stmt1->fetch()){
+                        if ($username_from_table==$_POST['username']){
+                            echo "Hi ";
+                            echo $_POST['username'];
+                            echo "! You already signed up with us!";
+                            $check_user_not_exist=false;
+                            exit;
+                        }
+                    }
+                    $stmt1->close();
+                    if($check_user_not_exist){
+                        $username = (String)$_POST['username'];
 
-                    $stmt->bind_param('ss', $username, $hashed_password);
-                    
-                    $stmt->execute();
+                        //salt and hash password
+                        $hashed_password = password_hash((String)$_POST['password'], PASSWORD_DEFAULT);
 
-                    $stmt->close();
-                    echo "Thank you for signing up with us! Click the link to login now!";
+                        //add user to table users
+                        $stmt = $mysqli->prepare("insert into users (username, password) values (?, ?)");
+                        if(!$stmt){
+                            printf("Query Prep Failed: %s\n", $mysqli->error);
+                            exit;
+                        }
+
+                        $stmt->bind_param('ss', $username, $hashed_password);
+                        
+                        $stmt->execute();
+
+                        $stmt->close();
+                        echo "Thank you for signing up with us! Click the link to login now!<br>";
+                        echo "Your username is: ";
+                        echo  $username;
+                        echo ", and your password is: ";
+                        echo (String)$_POST['password'];
+                    }
                 }
             }
             else{
