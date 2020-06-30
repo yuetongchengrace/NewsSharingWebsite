@@ -67,7 +67,9 @@
                 exit;
             }
             else{
+                echo '<div id="login_not_valid">';
                 echo "Username or password is not valid";
+                echo '</div>';
             }
     
             $stmt->close();
