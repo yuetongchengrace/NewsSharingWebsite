@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="main.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comments</title>
 </head>
@@ -151,17 +151,17 @@
                 echo htmlspecialchars((String)$comment_array[$i][0]);
                 echo '</span><span class="post_time_comments">';
                 echo htmlspecialchars($comment_array[$i][3]);
-                echo '</span><span>';
+                echo '</span><span class="like_number">';
                 if($comment_array[$i][4]==null){
-                    echo '</span>';
+                    echo ' </span>';
                 }
                 else if($comment_array[$i][4]==1){
                     echo htmlspecialchars($comment_array[$i][4]);
-                    echo 'like </span>';
+                    echo ' like </span>';
                 }
                 else{
                     echo htmlspecialchars($comment_array[$i][4]);
-                    echo 'likes </span>';
+                    echo ' likes </span>';
                 }
                 
                 $comment_id=$comment_array[$i][2];
@@ -177,7 +177,7 @@
                     $exist->execute();
                     $result = $exist->get_result();
                     $row = $result->fetch_assoc();
-    
+                    //display unlike button if the user has liked the corresponding comment
                     if($row!=null){
                     ?>
                         <form action="change_likes.php" method="POST" class="buttons">
@@ -187,6 +187,7 @@
                         </form>
                     <?php
                     }
+                    //display like button if the user hasn't liked the corresponding comment
                     else{
                     ?>
                     <form action="change_likes.php" method="POST" class="buttons">

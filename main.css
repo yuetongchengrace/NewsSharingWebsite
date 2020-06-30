@@ -233,6 +233,15 @@ textarea{
     font-size:14px;
 }
 
+.like_number{
+    font-size:18px;
+    
+}
+
+.comment_content{
+    font-weight: 300;
+    font-size:20px;
+}
 /*edit_story.php*/
 #edit_story_form{
     margin-top:350px;
