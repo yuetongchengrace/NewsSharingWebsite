@@ -46,6 +46,7 @@
                     $stmt->execute();
 
                     $stmt->close();
+                    echo "Thank you for signing up with us! Click the link to login now!";
                 }
             }
             else{
