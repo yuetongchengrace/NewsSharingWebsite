@@ -68,9 +68,9 @@
                         $stmt->close();
                         echo "Thank you for signing up with us! Click the link to login now!<br>";
                         echo "Your username is: ";
-                        echo  $username;
+                        echo htmlentities($username);
                         echo ", and your password is: ";
-                        echo (String)$_POST['password'];
+                        echo htmlentities($_POST['password']);
                     }
                 }
             }

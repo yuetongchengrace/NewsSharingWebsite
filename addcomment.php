@@ -24,7 +24,7 @@ if(isset($_POST['comment_button'])){
     //FIEO
     $username = (String)$_SESSION["username"];
     $comment = (String)$_POST['comment_text'];
-    $story_id = $_POST["story_id"];
+    $story_id = (int)$_POST["story_id"];
     
     //insert into table comments 
     $stmt = $mysqli->prepare("insert into comments (username, comment, story_id) values (?, ?, ?) ");

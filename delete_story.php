@@ -14,7 +14,7 @@
     if(!hash_equals($_SESSION['token'], $_POST['token'])){
         die("Request forgery detected");
     }
-    $story_id=$_POST['story_to_delete'];
+    $story_id=(int)$_POST['story_to_delete'];
     require 'database.php';
     //first select all comments that are linked to the story
     $stmt=$mysqli->prepare("select comment_id from comments where story_id=$story_id");
@@ -28,7 +28,7 @@
 
     $comment_ids = array();
     while($stmt->fetch()){
-        array_push( $comment_ids,$comment_id);
+        array_push($comment_ids,(int)$comment_id);
     }
     $stmt->close();
 

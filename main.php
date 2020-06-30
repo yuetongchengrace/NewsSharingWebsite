@@ -19,7 +19,7 @@
             <?php
                 echo "User: ";
                 if(isset($_SESSION["username"])){
-                    echo htmlentities((String)$_SESSION["username"]);
+                    echo htmlentities($_SESSION["username"]);
                     echo '<input type="submit" name="Logout" value="Logout"/>';
                 }
                 else{

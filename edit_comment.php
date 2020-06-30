@@ -20,7 +20,7 @@
 
             require 'database.php';
             $edited_comment=(String)$_POST['edited_comment'];
-            $comment_id=$_POST['comment_to_edit'];
+            $comment_id=(int)$_POST['comment_to_edit'];
 
             //update the table comments according to the edited version of comment
             $stmt = $mysqli->prepare("update comments set comment='$edited_comment' where comment_id=?");
@@ -46,7 +46,7 @@
             die("Request forgery detected");
         }
 
-        $comment_id=$_POST['comment_to_edit'];
+        $comment_id=(int)$_POST['comment_to_edit'];
         $query_comment=$mysqli->prepare("select comment from comments where comment_id='$comment_id'");
         if(!$query_comment){
             printf("Query Prep Failed: %s\n", $mysqli->error);
@@ -56,7 +56,7 @@
         $query_comment->execute();
         $result=$query_comment->get_result();
         $row=$result->fetch_assoc();
-        $comment=$row['comment'];
+        $comment=(String)$row['comment'];
         
     ?>
 

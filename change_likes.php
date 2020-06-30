@@ -18,7 +18,7 @@
             die("Request forgery detected");
         }
         $liked_user = (String)$_SESSION['username'];
-        $liked_comment = $_POST['comment_to_change_like'];
+        $liked_comment = (int)$_POST['comment_to_change_like'];
         $exist = $mysqli->prepare("select * from likes where username='$liked_user' and comment_id=$liked_comment");
         if(!$exist){
             printf("Query Prep Failed: %s\n", $mysqli->error);
@@ -76,7 +76,7 @@
 
         //delete from likes according to user and the specific comment
         $unliked_user = (String)$_SESSION['username'];
-        $unliked_comment = $_POST['comment_to_change_like'];
+        $unliked_comment = (int)$_POST['comment_to_change_like'];
 
         $stmt1 = $mysqli->prepare("delete from likes where username='$unliked_user' AND comment_id=$unliked_comment");
         if(!$stmt1){

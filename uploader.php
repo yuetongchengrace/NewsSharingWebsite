@@ -14,7 +14,8 @@
     if(isset($_POST['post_button'])){
         if(isset($_SESSION["username"])==null){
             echo "You need to be logged in to post anything!<br>";
-            echo '<a href="login.php">Log in now</a>';
+            echo '<a href="login.php">Log in now</a><br>';
+            echo '<a href="main.php">Continue visiting as guest</a>';
         }
         else if($_POST['new_story_input']==null){
             echo "Please enter something for your story";

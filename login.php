@@ -62,7 +62,7 @@
                 session_start();
                 //set token
                 $_SESSION["token"]=bin2hex(openssl_random_pseudo_bytes(32));
-                $_SESSION["username"]=$username;
+                $_SESSION["username"]=(String)$username;
                 header("Location: main.php");
                 exit;
             }

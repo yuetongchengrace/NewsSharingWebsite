@@ -11,9 +11,9 @@
     <?php
     session_start();
     if(isset($_POST['each_story_id'])){
-        $_SESSION["story_id"]=$_POST['each_story_id'];
+        $_SESSION["story_id"]=(int)$_POST['each_story_id'];
         }
-        $story_id= $_SESSION["story_id"];
+        $story_id= (int)$_SESSION["story_id"];
     ?>
     <!--Logout button-->
     <div>
@@ -108,16 +108,16 @@
         $query_story->execute();
         $result = $query_story->get_result();
         $row = $result->fetch_assoc();
-        $story = $row['story'];
-        $uploader = $row['username'];
-        $story_link = $row['link'];
+        $story = (String)$row['story'];
+        $uploader = (String)$row['username'];
+        $story_link = (String)$row['link'];
         $story_time=$row['added_time'];
         echo '<div id="comment_story"><span class="comment_story_username">';
-        echo htmlentities((String)$uploader);
+        echo htmlentities($uploader);
         echo ": </span>";
-        echo htmlentities((String)$story);
+        echo htmlentities($story);
         echo "\t" ;
-        echo '<a href="'.htmlentities((String)$story_link).'">Link</a>';
+        echo '<a href="'.htmlentities($story_link).'">Link</a>';
         echo '<span class="post_time">';
         echo htmlspecialchars($story_time);
         echo '</span></div>';
@@ -133,11 +133,11 @@
         $m=0;
         while($query_comments->fetch()){
             
-            $comment_array[$m][0]=$current_comments;
-            $comment_array[$m][1]=$commented_users;
-            $comment_array[$m][2]=$comment_id;
+            $comment_array[$m][0]=(String)$current_comments;
+            $comment_array[$m][1]=(String)$commented_users;
+            $comment_array[$m][2]=(int)$comment_id;
             $comment_array[$m][3]=$comment_time;
-            $comment_array[$m][4]=$comment_likes;
+            $comment_array[$m][4]=(int)$comment_likes;
             $m+=1;
         }
         $query_comments->close();
@@ -146,9 +146,9 @@
             for($i=0;$i<count($comment_array);$i++){
                 echo '<div>';
                 echo '<span class="comment_username">';
-                echo htmlspecialchars((String)$comment_array[$i][1]);
+                echo htmlspecialchars($comment_array[$i][1]);
                 echo ': </span><span class="comment_content">';
-                echo htmlspecialchars((String)$comment_array[$i][0]);
+                echo htmlspecialchars($comment_array[$i][0]);
                 echo '</span><span class="post_time_comments">';
                 echo htmlspecialchars($comment_array[$i][3]);
                 echo '</span><span class="like_number">';
@@ -164,7 +164,7 @@
                     echo ' likes </span>';
                 }
                 
-                $comment_id=$comment_array[$i][2];
+                $comment_id=(int)$comment_array[$i][2];
                 if(isset($_SESSION["username"])){
                     //display like and unlike only to registered users
                     $liked_user = (String)$_SESSION['username'];

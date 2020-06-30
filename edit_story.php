@@ -56,7 +56,7 @@
         $query_story->execute();
         $result=$query_story->get_result();
         $row=$result->fetch_assoc();
-        $story=$row['story'];
+        $story=(String)$row['story'];
         
     ?>
 

@@ -14,7 +14,7 @@
     if(!hash_equals($_SESSION['token'], $_POST['token'])){
         die("Request forgery detected");
     }
-    $comment_id=$_POST['comment_to_delete'];
+    $comment_id=(int)$_POST['comment_to_delete'];
     echo $comment_id;
     require 'database.php';
     //prepare to delete from table likes
