@@ -8,6 +8,7 @@
 
 ### Creative Portion:
  - Added **datetime** to posts and comments
+ - Added **show all** and **undo show all** to posts
  - Added **sort by new**,**sort by last edit** and **undo sort** to posts and comments
  - Added **like and unlike** to comments
  - Added **About us** page where users can find out about what functions are provided on the website
