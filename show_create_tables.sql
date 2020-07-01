@@ -15,8 +15,8 @@
   `story_id` mediumint(9) NOT NULL,\
   `comment_id` int(11) NOT NULL AUTO_INCREMENT,\
   `likes` int(10) unsigned DEFAULT NULL,\
-  `edited_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\
-  `added_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\
+  `edited_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\
+  `added_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,\
   PRIMARY KEY (`comment_id`),\
   KEY `story_id` (`story_id`),\
   CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`story_id`) REFERENCES `posts` (`story_id`)\
@@ -35,8 +35,8 @@ mysql> show create table posts;\
   `story` text NOT NULL,\
   `link` varchar(200) DEFAULT NULL,\
   `story_id` mediumint(9) NOT NULL AUTO_INCREMENT,\
-  `edited_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\
-  `added_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\
+  `edited_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\
+  `added_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,\
   PRIMARY KEY (`story_id`)\
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 |\
 +-------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+\
@@ -50,7 +50,7 @@ mysql> show create table users;\
 +-------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+\
 | users | CREATE TABLE `users` (\
   `username` varchar(50) NOT NULL,\
-  `password` varchar(255) DEFAULT NULL,\
+  `password` varchar(255) NOT NULL,\
   PRIMARY KEY (`username`)\
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 |\
 +-------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+\
