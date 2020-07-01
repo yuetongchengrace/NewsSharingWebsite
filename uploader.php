@@ -11,7 +11,7 @@
     <div id="uploader">
     <?php 
     session_start();
-    if(!hash_equals($_SESSION['token'], $_POST['token2'])){
+    if(!hash_equals($_SESSION['token'], $_POST['token'])){
         die("Request forgery detected");
     }
     if(isset($_POST['post_button'])){
