@@ -19,7 +19,9 @@
   `added_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,\
   PRIMARY KEY (`comment_id`),\
   KEY `story_id` (`story_id`),\
-  CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`story_id`) REFERENCES `posts` (`story_id`)\
+  KEY `username` (`username`),\
+  CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`story_id`) REFERENCES `posts` (`story_id`),\
+  CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`username`) REFERENCES `users` (`username`)\
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1 |\
 +----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+\
 1 row in set \
@@ -37,7 +39,9 @@ mysql> show create table posts;\
   `story_id` mediumint(9) NOT NULL AUTO_INCREMENT,\
   `edited_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\
   `added_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,\
-  PRIMARY KEY (`story_id`)\
+  PRIMARY KEY (`story_id`),\
+  KEY `username` (`username`),\
+  CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`)\
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 |\
 +-------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+\
 1 row in set \
