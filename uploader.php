@@ -11,6 +11,9 @@
     <div id="uploader">
     <?php 
     session_start();
+    if(!hash_equals($_SESSION['token'], $_POST['token2'])){
+        die("Request forgery detected");
+    }
     if(isset($_POST['post_button'])){
         if(isset($_SESSION["username"])==null){
             echo "You need to be logged in to post anything!<br>";

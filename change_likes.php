@@ -73,6 +73,9 @@
 
     elseif(isset($_POST['unlike_button'])){
         require 'database.php';
+        if(!hash_equals($_SESSION['token'], $_POST['token'])){
+            die("Request forgery detected");
+        }
 
         //delete from likes according to user and the specific comment
         $unliked_user = (String)$_SESSION['username'];
