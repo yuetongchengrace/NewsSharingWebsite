@@ -1,7 +1,7 @@
 # CSE330
 ### Group members:
- - 475337
- - 457001
+ - Grace Chen
+ - Chenye Qi
  
 ### Link: 
 [News Website](http://ec2-3-21-230-111.us-east-2.compute.amazonaws.com/~yuetongchen/module3-group/login.php)
